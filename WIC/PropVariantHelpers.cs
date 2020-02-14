@@ -48,7 +48,8 @@ namespace WIC
                 [typeof(string)] = value => new PROPVARIANT() { Type = VARTYPE.VT_LPWSTR, Value = new PROPVARIANT_Value() { Ptr = Marshal.StringToCoTaskMemUni((string)value) } },
                 [typeof(float)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R4, Value = new PROPVARIANT_Value() { R4 = (float)value } },
                 [typeof(double)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R8, Value = new PROPVARIANT_Value() { R8 = (double)value } },
-                [typeof(DateTime)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R8, Value = new PROPVARIANT_Value() { I8 = ((DateTime)value).ToFileTime() } }
+                [typeof(DateTime)] = value => new PROPVARIANT() { Type = VARTYPE.VT_FILETIME, Value = new PROPVARIANT_Value() { I8 = ((DateTime)value).ToFileTime() } },
+                [typeof(DateTimeOffset)] = value => new PROPVARIANT() { Type = VARTYPE.VT_FILETIME, Value = new PROPVARIANT_Value() { I8 = ((DateTimeOffset)value).ToFileTime() } }
             };
 
             elementSizes = new Dictionary<Type, int>()
@@ -85,7 +86,7 @@ namespace WIC
 
             elementEncoders = new Dictionary<Type, Action<IntPtr, object>>()
             {
-                [typeof(bool)] = (pointer, value) => Marshal.WriteInt16(pointer, (bool)value ? (char)1 : (char)0),
+                [typeof(bool)] = (pointer, value) => Marshal.WriteInt16(pointer, (bool)value ? (short)1 : (short)0),
                 [typeof(byte)] = (pointer, value) => Marshal.WriteByte(pointer, (byte)value),
                 [typeof(ushort)] = (pointer, value) => Marshal.WriteInt16(pointer, (short)(ushort)value),
                 [typeof(uint)] = (pointer, value) => Marshal.WriteInt32(pointer, (int)(uint)value),
@@ -94,7 +95,7 @@ namespace WIC
                 [typeof(short)] = (pointer, value) => Marshal.WriteInt16(pointer, (short)value),
                 [typeof(int)] = (pointer, value) => Marshal.WriteInt32(pointer, (int)value),
                 [typeof(long)] = (pointer, value) => Marshal.WriteInt64(pointer, (long)value),
-                [typeof(string)] = (pointer, value) => Marshal.StringToCoTaskMemUni((string)value),
+                [typeof(string)] = (pointer, value) => Marshal.WriteIntPtr(pointer, 0, Marshal.StringToCoTaskMemUni((string)value)),
                 [typeof(float)] = (pointer, value) => Marshal.WriteInt32(pointer, BitConverter.ToInt32(BitConverter.GetBytes((float)value), 0)),
                 [typeof(double)] = (pointer, value) => Marshal.WriteInt64(pointer, BitConverter.ToInt64(BitConverter.GetBytes((double)value), 0))
             };
@@ -176,7 +177,7 @@ namespace WIC
 
             int elementSize = elementSizes[elementType];
 
-            IntPtr vectorPtr = Marshal.AllocHGlobal(array.Count * elementSize);
+            IntPtr vectorPtr = Marshal.AllocCoTaskMem(array.Count * elementSize);
             IntPtr elementPtr = vectorPtr;
             foreach (var value in array)
             {
