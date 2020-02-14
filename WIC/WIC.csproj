@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40</TargetFrameworks>
     <Authors>stakx</Authors>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Company></Company>
     <Copyright>Copyright © stakx 2016-2017</Copyright>
     <PackageProjectUrl>https://github.com/stakx/WIC</PackageProjectUrl>

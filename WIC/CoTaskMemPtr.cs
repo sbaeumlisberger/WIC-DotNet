@@ -11,7 +11,7 @@ namespace WIC
             if (nullableStructure.HasValue)
             {
                 value = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(T)));
-                Marshal.StructureToPtr(nullableStructure, value, false);
+                Marshal.StructureToPtr(nullableStructure.Value, value, false);
             }
             else
             {
