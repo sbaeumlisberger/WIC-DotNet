@@ -307,7 +307,6 @@ namespace WIC
         private static void DisposeVector(PROPVARIANT variant)
         {
             Action<IntPtr> elementDisposer = null;
-            int elementSize = 0;
 
             switch (variant.Type & ~VARTYPE.VT_VECTOR)
             {
@@ -326,20 +325,17 @@ namespace WIC
 
                 case VARTYPE.VT_BSTR:
                     elementDisposer = Marshal.FreeBSTR;
-                    elementSize = IntPtr.Size;
                     break;
 
                 case VARTYPE.VT_LPSTR:
                 case VARTYPE.VT_LPWSTR:
                     elementDisposer = Marshal.FreeCoTaskMem;
-                    elementSize = IntPtr.Size;
                     break;
 
                 case VARTYPE.VT_UNKNOWN:
                 case VARTYPE.VT_STREAM:
                 case VARTYPE.VT_STORAGE:
                     elementDisposer = ptr => { Marshal.Release(ptr); };
-                    elementSize = IntPtr.Size;
                     break;
 
                 default:
@@ -354,8 +350,8 @@ namespace WIC
                 IntPtr elementPtr = vectorPtr;
                 for (int i = 0, n = variant.Value.Vector.Length; i < n; ++i)
                 {
-                    elementDisposer.Invoke(elementPtr);
-                    elementPtr += elementSize;
+                    elementDisposer.Invoke(Marshal.ReadIntPtr(elementPtr));
+                    elementPtr += IntPtr.Size;
                 }
             }
 
