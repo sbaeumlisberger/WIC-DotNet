@@ -21,17 +21,5 @@ namespace WIC
             bitmapFrameEncode.Initialize(pIEncoderOptions);
         }
 
-        public static void WriteSource(this IWICBitmapFrameEncode bitmapFrameEncode, IWICBitmapSource pIBitmapSource, WICRect? prc = null)
-        {
-            using (var prcPtr = CoTaskMemPtr.From(prc))
-            {
-                bitmapFrameEncode.WriteSource(pIBitmapSource, prcPtr);
-            }
-        }
-
-        public static void WritePixels(this IWICBitmapFrameEncode bitmapFrameEncode, int lineCount, int cbStride, byte[] pbPixels)
-        {
-            bitmapFrameEncode.WritePixels(lineCount, cbStride, pbPixels.Length, pbPixels);
-        }
     }
 }
