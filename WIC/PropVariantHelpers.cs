@@ -13,43 +13,43 @@ namespace WIC
         {
             decoders = new Dictionary<VARTYPE, Func<PROPVARIANT, object>>()
             {
-                [VARTYPE.VT_BOOL] = variant => variant.Value.UI2 == 0 ? false : true,
-                [VARTYPE.VT_UI1] = variant => variant.Value.UI1,
-                [VARTYPE.VT_UI2] = variant => variant.Value.UI2,
-                [VARTYPE.VT_UI4] = variant => variant.Value.UI4,
-                [VARTYPE.VT_UI8] = variant => variant.Value.UI8,
-                [VARTYPE.VT_I1] = variant => variant.Value.I1,
-                [VARTYPE.VT_I2] = variant => variant.Value.I2,
-                [VARTYPE.VT_I4] = variant => variant.Value.I4,
-                [VARTYPE.VT_I8] = variant => variant.Value.I8,
-                [VARTYPE.VT_LPSTR] = variant => Marshal.PtrToStringAnsi(variant.Value.Ptr),
-                [VARTYPE.VT_LPWSTR] = variant => Marshal.PtrToStringUni(variant.Value.Ptr),
-                [VARTYPE.VT_BSTR] = variant => Marshal.PtrToStringBSTR(variant.Value.Ptr),
-                [VARTYPE.VT_R4] = variant => variant.Value.R4,
-                [VARTYPE.VT_R8] = variant => variant.Value.R8,
-                [VARTYPE.VT_FILETIME] = variant => DateTime.FromFileTime(variant.Value.I8),
-                [VARTYPE.VT_UNKNOWN] = variant => Marshal.GetObjectForIUnknown(variant.Value.Ptr),
-                [VARTYPE.VT_STREAM] = variant => Marshal.GetObjectForIUnknown(variant.Value.Ptr),
-                [VARTYPE.VT_STORAGE] = variant => Marshal.GetObjectForIUnknown(variant.Value.Ptr),
+                [VARTYPE.VT_BOOL] = variant => variant.UI2 == 0 ? false : true,
+                [VARTYPE.VT_UI1] = variant => variant.UI1,
+                [VARTYPE.VT_UI2] = variant => variant.UI2,
+                [VARTYPE.VT_UI4] = variant => variant.UI4,
+                [VARTYPE.VT_UI8] = variant => variant.UI8,
+                [VARTYPE.VT_I1] = variant => variant.I1,
+                [VARTYPE.VT_I2] = variant => variant.I2,
+                [VARTYPE.VT_I4] = variant => variant.I4,
+                [VARTYPE.VT_I8] = variant => variant.I8,
+                [VARTYPE.VT_LPSTR] = variant => Marshal.PtrToStringAnsi(variant.Ptr),
+                [VARTYPE.VT_LPWSTR] = variant => Marshal.PtrToStringUni(variant.Ptr),
+                [VARTYPE.VT_BSTR] = variant => Marshal.PtrToStringBSTR(variant.Ptr),
+                [VARTYPE.VT_R4] = variant => variant.R4,
+                [VARTYPE.VT_R8] = variant => variant.R8,
+                [VARTYPE.VT_FILETIME] = variant => DateTime.FromFileTime(variant.I8),
+                [VARTYPE.VT_UNKNOWN] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
+                [VARTYPE.VT_STREAM] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
+                [VARTYPE.VT_STORAGE] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
                 [VARTYPE.VT_VECTOR] = DecodeVector,
             };
 
             encoders = new Dictionary<Type, Func<object, PROPVARIANT>>()
             {
-                [typeof(bool)] = value => new PROPVARIANT() { Type = VARTYPE.VT_BOOL, Value = new PROPVARIANT_Value() { UI2 = (bool)value ? (ushort)1 : (ushort)0 } },
-                [typeof(byte)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI1, Value = new PROPVARIANT_Value() { UI1 = (byte)value } },
-                [typeof(ushort)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI2, Value = new PROPVARIANT_Value() { UI2 = (ushort)value } },
-                [typeof(uint)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI4, Value = new PROPVARIANT_Value() { UI4 = (uint)value } },
-                [typeof(ulong)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI8, Value = new PROPVARIANT_Value() { UI8 = (ulong)value } },
-                [typeof(sbyte)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I1, Value = new PROPVARIANT_Value() { I1 = (sbyte)value } },
-                [typeof(short)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I2, Value = new PROPVARIANT_Value() { I2 = (short)value } },
-                [typeof(int)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I4, Value = new PROPVARIANT_Value() { I4 = (int)value } },
-                [typeof(long)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I8, Value = new PROPVARIANT_Value() { I8 = (long)value } },
-                [typeof(string)] = value => new PROPVARIANT() { Type = VARTYPE.VT_LPWSTR, Value = new PROPVARIANT_Value() { Ptr = Marshal.StringToCoTaskMemUni((string)value) } },
-                [typeof(float)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R4, Value = new PROPVARIANT_Value() { R4 = (float)value } },
-                [typeof(double)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R8, Value = new PROPVARIANT_Value() { R8 = (double)value } },
-                [typeof(DateTime)] = value => new PROPVARIANT() { Type = VARTYPE.VT_FILETIME, Value = new PROPVARIANT_Value() { I8 = ((DateTime)value).ToFileTime() } },
-                [typeof(DateTimeOffset)] = value => new PROPVARIANT() { Type = VARTYPE.VT_FILETIME, Value = new PROPVARIANT_Value() { I8 = ((DateTimeOffset)value).ToFileTime() } }
+                [typeof(bool)] = value => new PROPVARIANT() { Type = VARTYPE.VT_BOOL, UI2 = (bool)value ? (ushort)1 : (ushort)0 },
+                [typeof(byte)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI1, UI1 = (byte)value },
+                [typeof(ushort)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI2, UI2 = (ushort)value },
+                [typeof(uint)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI4, UI4 = (uint)value },
+                [typeof(ulong)] = value => new PROPVARIANT() { Type = VARTYPE.VT_UI8, UI8 = (ulong)value },
+                [typeof(sbyte)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I1, I1 = (sbyte)value },
+                [typeof(short)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I2, I2 = (short)value },
+                [typeof(int)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I4, I4 = (int)value },
+                [typeof(long)] = value => new PROPVARIANT() { Type = VARTYPE.VT_I8, I8 = (long)value },
+                [typeof(string)] = value => new PROPVARIANT() { Type = VARTYPE.VT_LPWSTR, Ptr = Marshal.StringToCoTaskMemUni((string)value) },
+                [typeof(float)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R4, R4 = (float)value },
+                [typeof(double)] = value => new PROPVARIANT() { Type = VARTYPE.VT_R8, R8 = (double)value },
+                [typeof(DateTime)] = value => new PROPVARIANT() { Type = VARTYPE.VT_FILETIME, I8 = ((DateTime)value).ToFileTime() },
+                [typeof(DateTimeOffset)] = value => new PROPVARIANT() { Type = VARTYPE.VT_FILETIME, I8 = ((DateTimeOffset)value).ToFileTime() }
             };
 
             elementSizes = new Dictionary<Type, int>()
@@ -102,15 +102,15 @@ namespace WIC
 
             Action<PROPVARIANT> disposePtr = variant =>
             {
-               Marshal.FreeCoTaskMem(variant.Value.Ptr);
+                Marshal.FreeCoTaskMem(variant.Ptr);
             };
             Action<PROPVARIANT> disposeBSTR = variant =>
             {
-                Marshal.FreeBSTR(variant.Value.Ptr);
+                Marshal.FreeBSTR(variant.Ptr);
             };
             Action<PROPVARIANT> disposeComObject = variant =>
             {
-                Marshal.Release(variant.Value.Ptr);
+                Marshal.Release(variant.Ptr);
             };
 
             disposers = new Dictionary<VARTYPE, Action<PROPVARIANT>>()
@@ -188,13 +188,10 @@ namespace WIC
             return new PROPVARIANT()
             {
                 Type = VARTYPE.VT_VECTOR | vectorTypes[elementType],
-                Value = new PROPVARIANT_Value()
+                Vector = new PROPVARIANT_Vector()
                 {
-                    Vector = new PROPVARIANT_Vector()
-                    {
-                        Length = array.Count,
-                        Ptr = vectorPtr
-                    }
+                    Length = array.Count,
+                    Ptr = vectorPtr
                 }
             };
         }
@@ -279,9 +276,9 @@ namespace WIC
                     throw new NotImplementedException();
             }
 
-            int length = variant.Value.Vector.Length;
+            int length = variant.Vector.Length;
             var vector = Array.CreateInstance(elementType, length);
-            IntPtr elementPtr = variant.Value.Vector.Ptr;
+            IntPtr elementPtr = variant.Vector.Ptr;
             for (int i = 0; i < length; ++i)
             {
                 vector.SetValue(elementDecoder.Invoke(elementPtr), i);
@@ -342,13 +339,13 @@ namespace WIC
                     throw new NotImplementedException();
             }
 
-            IntPtr vectorPtr = variant.Value.Vector.Ptr;
+            IntPtr vectorPtr = variant.Vector.Ptr;
 
             // if necessary, dispose each of the vector's elements:
             if (elementDisposer != null)
             {
                 IntPtr elementPtr = vectorPtr;
-                for (int i = 0, n = variant.Value.Vector.Length; i < n; ++i)
+                for (int i = 0, n = variant.Vector.Length; i < n; ++i)
                 {
                     elementDisposer.Invoke(Marshal.ReadIntPtr(elementPtr));
                     elementPtr += IntPtr.Size;
