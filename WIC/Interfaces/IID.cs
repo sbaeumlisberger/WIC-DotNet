@@ -39,5 +39,7 @@
         public const string IWICMetadataWriter = "f7836e16-3be0-470b-86bb-160d0aecd7de";
         public const string IWICPalette = "00000040-a8f2-4877-ba0a-fd2b6645fb94";
         public const string IWICStream = "135ff860-22b7-4ddf-b0f6-218f4f299a43";
+        public const string IWICPixelFormatInfo = "E8EDA601-3D48-431A-AB44-69059BE88BBE";
+        public const string IWICPixelFormatInfo2 = "A9DB33A2-AF5F-43C7-B679-74F5984B5AA4";
     }
 }
