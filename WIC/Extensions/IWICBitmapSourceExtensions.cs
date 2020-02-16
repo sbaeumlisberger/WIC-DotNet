@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace WIC
 {
@@ -13,17 +14,28 @@ namespace WIC
             }
         }
 
+        public static byte[] GetPixels(this IWICBitmapSource bitmapSource) 
+        {
+            var wic = new WICImagingFactory();
+            Guid pixelFormat = bitmapSource.GetPixelFormat();
+            var pixelFormatInfo = (IWICPixelFormatInfo)wic.CreateComponentInfo(pixelFormat);
+            int bytesPerPixel = pixelFormatInfo.GetBitsPerPixel() / 8;
+            bitmapSource.GetSize(out int width, out int height);
+            int stride = width * bytesPerPixel;
+            byte[] buffer = new byte[width * height * bytesPerPixel];
+            bitmapSource.CopyPixels(stride, buffer);
+            return buffer;
+        }
+
         public static Size GetSize(this IWICBitmapSource bitmapSource)
         {
-            int width, height;
-            bitmapSource.GetSize(out width, out height);
+            bitmapSource.GetSize(out int width, out int height);
             return new Size(width, height);
         }
 
         public static Resolution GetResolution(this IWICBitmapSource bitmapSource)
         {
-            double dpiX, dpiY;
-            bitmapSource.GetResolution(out dpiX, out dpiY);
+            bitmapSource.GetResolution(out double dpiX, out double dpiY);
             return new Resolution(dpiX, dpiY);
         }
     }
