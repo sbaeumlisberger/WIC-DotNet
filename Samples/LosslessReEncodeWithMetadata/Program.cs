@@ -50,7 +50,7 @@ namespace LosslessReEncodeWithMetadata
                 fileStream.SetLength(0);
                 memoryStream.CopyTo(fileStream);
 
-                Console.WriteLine("Image successfully with metadata re-encoded!");
+                Console.WriteLine("Image successfully lossless re-encoded with metadata!");
             }
             catch (Exception ex) when (ex.HResult == HResult.WINCODEC_ERR_PROPERTY_NOT_SUPPORTED)
             {
