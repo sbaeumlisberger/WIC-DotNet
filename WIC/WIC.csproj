@@ -2,20 +2,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>stakx</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>stakx, S. Bäumlisberger</Authors>
     <Company></Company>
-    <Copyright>Copyright © stakx 2016-2017</Copyright>
-    <PackageProjectUrl>https://github.com/stakx/WIC</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/stakx/WIC.git</RepositoryUrl>
+    <Copyright>© 2016-2017 stakx, 2020 S. Bäumlisberger</Copyright>
+    <PackageProjectUrl>https://github.com/sbaeumlisberger/WIC-DotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sbaeumlisberger/WIC-DotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageLicenseUrl>https://github.com/stakx/WIC/blob/develop/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageTags>windows imaging image-processing windows-imaging-component wic com-interop</PackageTags>
+    <PackageTags>windows imaging image-processing windows-imaging-component wic com-interop bitmap docoding encoding</PackageTags>
     <Product>WIC</Product>
-    <Description>A COM interop library for .NET that makes Windows Imaging Component (WIC) available to managed code, including a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.</Description>
-    <Version>0.1.0</Version>
-    <PackageId>stakx.WIC</PackageId>
+    <Description>A .NET Standard library that makes the Windows Imaging Component (WIC) available to managed code so that it can be used in .NET Core and UWP (.NET Native). The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.</Description>
+    <Version>1.0.0-beta.3</Version>
+    <PackageId>WIC.DotNet</PackageId>  
   </PropertyGroup>
 
 </Project>
