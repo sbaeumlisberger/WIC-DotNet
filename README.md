@@ -2,7 +2,9 @@
 
 A .NET Standard library that makes the Windows Imaging Component (WIC) available to managed code so that it can be used in .NET Core and UWP (.NET Native). The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.
 
-[![NuGet](https://img.shields.io/nuget/v/stakx.WIC.svg?style=flat-square)](https://www.nuget.org/packages/WIC.DotNet/)
+
+
+[Get it from NuGet](https://www.nuget.org/packages/WIC.DotNet/)
 
 ## What is the Windows Imaging Component (WIC)?
 
@@ -24,7 +26,7 @@ Windows Imaging Component allows you to accomplish tasks such as:
  1. Familiarize yourself with the WIC, if you don't know it yet.
     See e.g. the [Windows Imaging Component documentation on MSDN][msdn].
 
- 2. Add the [NuGet package `WIC-DotNet`][nuget-package] to your project.
+ 2. Add the NuGet package [`WIC-DotNet`][nuget-package] to your project.
     Alternatively, you can compile this project yourself (you will need Visual Studio 2017 for this), and then add a reference to the built `WIC.dll` assembly to your project.
 
  3. In your code, start by instantiating a `WICImagingFactory` object.
@@ -35,4 +37,6 @@ Windows Imaging Component allows you to accomplish tasks such as:
 
 ## Is there any example code?
 
-You can find some samples in the [Samples][https://github.com/sbaeumlisberger/WIC-DotNet/tree/develop/Samples] directory and you can also refer to the the WIC samples on [MSDN].
+You can find some samples in the [Samples] directory and you can also refer to the the WIC samples on [MSDN].
+
+[Samples]: https://github.com/sbaeumlisberger/WIC-DotNet/tree/develop/Samples
