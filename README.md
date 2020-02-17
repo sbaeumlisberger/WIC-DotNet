@@ -1,8 +1,6 @@
-# WIC
+# WIC-DotNet
 
 A .NET Standard library that makes the Windows Imaging Component (WIC) available to managed code so that it can be used in .NET Core and UWP (.NET Native). The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.
-
-
 
 [Get it from NuGet](https://www.nuget.org/packages/WIC.DotNet/)
 
