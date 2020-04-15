@@ -7,8 +7,7 @@ namespace WIC
     {
         public static int[] GetColors(this IWICPalette palette)
         {
-            FetchIntoBuffer<int> fetcher = palette.GetColors;
-            return fetcher.FetchArray();
+            return FetchIntoBufferHelper.FetchArray<int>(palette.GetColors);
         }
 
         public static void InitializeCustom(this IWICPalette palette, int[] pColors)

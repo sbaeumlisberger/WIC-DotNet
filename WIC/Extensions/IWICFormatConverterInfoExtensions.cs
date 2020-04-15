@@ -8,8 +8,7 @@ namespace WIC
     {
         public static Guid[] GetPixelFormats(this IWICFormatConverterInfo formatConverterInfo)
         {
-            FetchIntoBuffer<Guid> fetcher = formatConverterInfo.GetPixelFormats;
-            return fetcher.FetchArray();
+            return FetchIntoBufferHelper.FetchArray<Guid>(formatConverterInfo.GetPixelFormats);
         }
 
     }

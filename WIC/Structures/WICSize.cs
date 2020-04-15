@@ -1,8 +1,8 @@
 ﻿namespace WIC
 {
-    public struct Size
+    public struct WICSize
     {
-        public Size(int width, int height)
+        public WICSize(int width, int height)
         {
             Width = width;
             Height = height;

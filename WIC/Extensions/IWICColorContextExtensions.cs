@@ -12,8 +12,7 @@ namespace WIC
 
         public static byte[] GetProfileBytes(this IWICColorContext colorContext)
         {
-            FetchIntoBuffer<byte> fetcher = colorContext.GetProfileBytes;
-            return fetcher.FetchArray();
+            return FetchIntoBufferHelper.FetchArray<byte>(colorContext.GetProfileBytes);
         }
     }
 }

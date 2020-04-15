@@ -7,32 +7,27 @@ namespace WIC
     {
         public static string GetColorManagementVersion(this IWICBitmapCodecInfo bitmapCodecInfo)
         {
-            FetchIntoBuffer<char> fetcher = bitmapCodecInfo.GetColorManagementVersion;
-            return fetcher.FetchString();
+            return FetchIntoBufferHelper.FetchString(bitmapCodecInfo.GetColorManagementVersion);
         }
 
         public static string GetDeviceManufacturer(this IWICBitmapCodecInfo bitmapCodecInfo)
         {
-            FetchIntoBuffer<char> fetcher = bitmapCodecInfo.GetDeviceManufacturer;
-            return fetcher.FetchString();
+            return FetchIntoBufferHelper.FetchString(bitmapCodecInfo.GetDeviceManufacturer);
         }
 
         public static string GetDeviceModels(this IWICBitmapCodecInfo bitmapCodecInfo)
         {
-            FetchIntoBuffer<char> fetcher = bitmapCodecInfo.GetDeviceModels;
-            return fetcher.FetchString();
+            return FetchIntoBufferHelper.FetchString(bitmapCodecInfo.GetDeviceModels);
         }
 
         public static string[] GetMimeTypes(this IWICBitmapCodecInfo bitmapCodecInfo)
         {
-            FetchIntoBuffer<char> fetcher = bitmapCodecInfo.GetMimeTypes;
-            return fetcher.FetchString().Split(',');
+            return FetchIntoBufferHelper.FetchString(bitmapCodecInfo.GetMimeTypes).Split(',');
         }
 
         public static string[] GetFileExtensions(this IWICBitmapCodecInfo bitmapCodecInfo)
         {
-            FetchIntoBuffer<char> fetcher = bitmapCodecInfo.GetFileExtensions;
-            return fetcher.FetchString().Split(',');
+            return FetchIntoBufferHelper.FetchString(bitmapCodecInfo.GetFileExtensions).Split(',');
         }
     }
 }

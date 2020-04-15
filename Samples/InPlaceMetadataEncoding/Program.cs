@@ -31,14 +31,14 @@ namespace InPlaceMetadataEncoding
 
                 Console.WriteLine("Metadata successfully encoded!");
             }
-            catch (Exception ex) when (ex.HResult == HResult.WINCODEC_ERR_PROPERTY_NOT_SUPPORTED)
+            catch (Exception ex) when (ex.HResult == WinCodecError.PROPERTY_NOT_SUPPORTED)
             {
                 Console.WriteLine("The file format does not support the requested metadata.");
             }
-            catch (Exception ex) when (ex.HResult == HResult.WINCODEC_ERR_TOOMUCHMETADATA
-                || ex.HResult == HResult.WINCODEC_ERR_INSUFFICIENTBUFFER
-                || ex.HResult == HResult.WINCODEC_ERR_IMAGE_METADATA_HEADER_UNKNOWN
-                || ex.HResult == HResult.WINCODEC_ERR_UNSUPPORTED_OPERATION)
+            catch (Exception ex) when (ex.HResult == WinCodecError.TOOMUCHMETADATA
+                || ex.HResult == WinCodecError.INSUFFICIENTBUFFER
+                || ex.HResult == WinCodecError.IMAGE_METADATA_HEADER_UNKNOWN
+                || ex.HResult == WinCodecError.UNSUPPORTED_OPERATION)
             {
                 Console.WriteLine("The file has not enough padding for the requested metadata.");
             }

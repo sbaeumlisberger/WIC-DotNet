@@ -52,11 +52,11 @@ namespace LosslessReEncodeWithMetadata
 
                 Console.WriteLine("Image successfully lossless re-encoded with metadata!");
             }
-            catch (Exception ex) when (ex.HResult == HResult.WINCODEC_ERR_PROPERTY_NOT_SUPPORTED)
+            catch (Exception ex) when (ex.HResult == WinCodecError.PROPERTY_NOT_SUPPORTED)
             {
                 Console.WriteLine("The file format does not support the requested metadata.");
             }
-            catch (Exception ex) when (ex.HResult == HResult.WINCODEC_ERR_UNSUPPORTED_OPERATION)
+            catch (Exception ex) when (ex.HResult == WinCodecError.UNSUPPORTED_OPERATION)
             {
                 Console.WriteLine("The file format does not support any metadata.");
             }

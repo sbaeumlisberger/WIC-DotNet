@@ -27,10 +27,10 @@ namespace WIC
             return buffer;
         }
 
-        public static Size GetSize(this IWICBitmapSource bitmapSource)
+        public static WICSize GetSize(this IWICBitmapSource bitmapSource)
         {
             bitmapSource.GetSize(out int width, out int height);
-            return new Size(width, height);
+            return new WICSize(width, height);
         }
 
         public static Resolution GetResolution(this IWICBitmapSource bitmapSource)

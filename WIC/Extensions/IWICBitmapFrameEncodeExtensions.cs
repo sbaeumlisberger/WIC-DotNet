@@ -25,7 +25,7 @@ namespace WIC
             bitmapFrameEncode.SetResolution(resolution.DpiX, resolution.DpiY);
         }
 
-        public static void SetSize(this IWICBitmapFrameEncode bitmapFrameEncode, Size size)
+        public static void SetSize(this IWICBitmapFrameEncode bitmapFrameEncode, WICSize size)
         {
             bitmapFrameEncode.SetSize(size.Width, size.Height);
         }

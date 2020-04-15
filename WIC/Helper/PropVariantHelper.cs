@@ -7,9 +7,9 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace WIC
 {
-    internal static class PropVariantHelpers
+    internal static class PropVariantHelper
     {
-        static PropVariantHelpers()
+        static PropVariantHelper()
         {
             decoders = new Dictionary<VARTYPE, Func<PROPVARIANT, object>>()
             {

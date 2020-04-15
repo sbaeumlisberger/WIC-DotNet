@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using static WIC.PropVariantHelpers;
+using static WIC.PropVariantHelper;
 
 namespace WIC
 {
@@ -10,8 +10,7 @@ namespace WIC
     {
         public static string GetLocation(this IWICMetadataQueryReader metadataQueryReader)
         {
-            FetchIntoBuffer<char> fetcher = metadataQueryReader.GetLocation;
-            return fetcher.FetchString();
+            return FetchIntoBufferHelper.FetchString(metadataQueryReader.GetLocation);
         }
 
         public static bool TryGetMetadataByName<T>(this IWICMetadataQueryReader metadataQueryReader, string name, out T value)
@@ -31,7 +30,7 @@ namespace WIC
                 metadataQueryReader.GetMetadataByName(name, ref variant);
                 return TryDecode(ref variant, out value);
             }
-            catch (COMException ex) when (ex.ErrorCode == HResult.WINCODEC_ERR_PROPERTY_NOT_FOUND)
+            catch (COMException ex) when (ex.ErrorCode == WinCodecError.PROPERTY_NOT_FOUND)
             {
                 value = default(T);
                 return false;

@@ -12,8 +12,7 @@ namespace WIC
 
         public static IWICColorContext[] GetColorContexts(this IWICBitmapFrameDecode bitmapFrameDecode)
         {
-            FetchIntoBuffer<IWICColorContext> fetcher = bitmapFrameDecode.GetColorContexts;
-            return fetcher.FetchArray();
+            return FetchIntoBufferHelper.FetchArray<IWICColorContext>(bitmapFrameDecode.GetColorContexts);
         }
 
         public static void Initialize(this IWICBitmapFrameEncode bitmapFrameEncode, IPropertyBag2 pIEncoderOptions = null)

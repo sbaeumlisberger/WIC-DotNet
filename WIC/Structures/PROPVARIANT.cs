@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 namespace WIC
 {
     [StructLayout(LayoutKind.Explicit, Pack = 8)]
-    public struct PROPVARIANT
+    public struct PROPVARIANT : IDisposable
     {
         [FieldOffset(0)]
         public VARTYPE Type;
-    
+
         [FieldOffset(8)]
         public sbyte I1;
 
@@ -50,6 +50,11 @@ namespace WIC
 
         [FieldOffset(8)]
         public PROPVARIANT_Vector Vector;
+
+        public void Dispose()
+        {
+            PropVariantHelper.Dispose(ref this);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

@@ -2,23 +2,22 @@
 {
     internal delegate void FetchIntoBuffer<T>(int size, T[] buffer, out int length);
 
-    internal static class FetchIntoBufferExtensions
+    internal static class FetchIntoBufferHelper
     {
-        internal static T[] FetchArray<T>(this FetchIntoBuffer<T> fetcher)
+        internal static T[] FetchArray<T>(FetchIntoBuffer<T> fetcher)
         {
-            int length;
-            fetcher.Invoke(0, null, out length);
+            fetcher.Invoke(0, null, out int length);
             var buffer = new T[length];
             if (length > 0)
             {
-                fetcher.Invoke(length, buffer, out length);
+                fetcher.Invoke(length, buffer, out _);
             }
             return buffer;
         }
 
-        internal static string FetchString(this FetchIntoBuffer<char> fetcher)
+        internal static string FetchString(FetchIntoBuffer<char> fetcher)
         {
-            var buffer = fetcher.FetchArray();
+            var buffer = FetchArray(fetcher);
             int length = buffer.Length - 1;
             if (length > 0)
             {

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using static WIC.PropVariantHelpers;
 
 namespace WIC
 {
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public static class IWICMetadataQueryWriterExtensions
     {
-
         public static void SetMetadataByName(this IWICMetadataQueryWriter metadataQueryWriter, string name, object value)
         {
             if (metadataQueryWriter is null)
@@ -24,14 +22,14 @@ namespace WIC
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var variant = PropVariantHelpers.Encode(value);
+            var variant = PropVariantHelper.Encode(value);
             try
             {
                 metadataQueryWriter.SetMetadataByName(name, ref variant);
             }
             finally
             {
-                Dispose(ref variant);
+                variant.Dispose();
             }
         }
 
