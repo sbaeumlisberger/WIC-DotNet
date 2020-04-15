@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>S. Bäumlisberger</Authors>
+    <Company></Company>
+    <Copyright>© 2020 S. Bäumlisberger</Copyright>
+    <PackageProjectUrl>https://github.com/sbaeumlisberger/WIC-DotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sbaeumlisberger/WIC-DotNet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>windows imaging image-processing windows-imaging-component wic com-interop bitmap docoding encoding</PackageTags>
+    <Product>WIC</Product>
+    <Description>A .NET Standard library that makes the Windows Imaging Component (WIC) available to managed code so that it can be used in .NET Core, .NET Framework and UWP (.NET Native). The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.</Description>
+    <Version>1.0.0</Version>
+    <PackageId>WIC.DotNet</PackageId>  
+  </PropertyGroup>
+
+</Project>
