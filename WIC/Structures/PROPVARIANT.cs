@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace WIC
 {
     [StructLayout(LayoutKind.Explicit, Pack = 8)]
-    public struct PROPVARIANT : IDisposable
+    public struct PROPVARIANT
     {
         [FieldOffset(0)]
         public VARTYPE Type;
@@ -34,12 +34,6 @@ namespace WIC
         public ulong UI8;
 
         [FieldOffset(8)]
-        public PROPVARIANT_SplitI8 SplitI8;
-
-        [FieldOffset(8)]
-        public PROPVARIANT_SplitUI8 SplitUI8;
-
-        [FieldOffset(8)]
         public float R4;
 
         [FieldOffset(8)]
@@ -50,25 +44,6 @@ namespace WIC
 
         [FieldOffset(8)]
         public PROPVARIANT_Vector Vector;
-
-        public void Dispose()
-        {
-            PropVariantHelper.Dispose(ref this);
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct PROPVARIANT_SplitI8
-    {
-        public int A;
-        public int B;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct PROPVARIANT_SplitUI8
-    {
-        public uint A;
-        public uint B;
     }
 
     [StructLayout(LayoutKind.Sequential)]
