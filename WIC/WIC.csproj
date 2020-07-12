@@ -14,13 +14,12 @@
     <PackageTags>windows imaging image-processing windows-imaging-component wic com-interop bitmap docoding encoding</PackageTags>
     <Product>WIC</Product>
     <Description>A .NET Standard library that makes the Windows Imaging Component (WIC) available to managed code so that it can be used in .NET Core, .NET Framework and UWP (.NET Native). The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.</Description>
-    <Version>1.0.0</Version>
-    <PackageId>WIC.DotNet</PackageId>  
+    <Version>1.1.1</Version>
+    <PackageId>WIC.DotNet</PackageId>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedAllSources>true</EmbedAllSources>
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
   </PropertyGroup>
-
 </Project>
