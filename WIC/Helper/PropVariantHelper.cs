@@ -31,6 +31,15 @@ namespace WIC
                 [VARTYPE.VT_UNKNOWN] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
                 [VARTYPE.VT_STREAM] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
                 [VARTYPE.VT_STORAGE] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
+                [VARTYPE.VT_BLOB] = variant =>
+                {
+                    byte[] blob = new byte[variant.Vector.Length];
+                    if (variant.Vector.Length > 0)
+                    {
+                        Marshal.Copy(variant.Vector.Ptr, blob, 0, variant.Vector.Length);
+                    }
+                    return blob;
+                },
             };
 
             encoders = new Dictionary<Type, Func<object, PROPVARIANT>>()
@@ -284,10 +293,10 @@ namespace WIC
                     Ptr = vectorPtr
                 }
             };
-        }               
+        }
 
         private static void DisposeVector(PROPVARIANT variant)
-        {          
+        {
             // if necessary, dispose each of the vector's elements:
             if (disposers.TryGetValue(variant.Type & ~VectorFlags, out var disposer))
             {
