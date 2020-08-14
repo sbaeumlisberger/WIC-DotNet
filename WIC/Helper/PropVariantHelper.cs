@@ -13,7 +13,7 @@ namespace WIC
         {
             decoders = new Dictionary<VARTYPE, Func<PROPVARIANT, object>>()
             {
-                [VARTYPE.VT_BOOL] = variant => variant.UI2 == 0 ? false : true,
+                [VARTYPE.VT_BOOL] = variant => variant.UI2 != 0,
                 [VARTYPE.VT_UI1] = variant => variant.UI1,
                 [VARTYPE.VT_UI2] = variant => variant.UI2,
                 [VARTYPE.VT_UI4] = variant => variant.UI4,
@@ -31,7 +31,15 @@ namespace WIC
                 [VARTYPE.VT_UNKNOWN] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
                 [VARTYPE.VT_STREAM] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
                 [VARTYPE.VT_STORAGE] = variant => Marshal.GetObjectForIUnknown(variant.Ptr),
-                [VARTYPE.VT_VECTOR] = DecodeVector,
+                [VARTYPE.VT_BLOB] = variant =>
+                {
+                    byte[] blob = new byte[variant.Vector.Length];
+                    if (variant.Vector.Length > 0)
+                    {
+                        Marshal.Copy(variant.Vector.Ptr, blob, 0, variant.Vector.Length);
+                    }
+                    return blob;
+                },
             };
 
             encoders = new Dictionary<Type, Func<object, PROPVARIANT>>()
@@ -86,77 +94,64 @@ namespace WIC
 
             elementEncoders = new Dictionary<Type, Action<IntPtr, object>>()
             {
-                [typeof(bool)] = (pointer, value) => Marshal.WriteInt16(pointer, (bool)value ? (short)1 : (short)0),
-                [typeof(byte)] = (pointer, value) => Marshal.WriteByte(pointer, (byte)value),
-                [typeof(ushort)] = (pointer, value) => Marshal.WriteInt16(pointer, (short)(ushort)value),
-                [typeof(uint)] = (pointer, value) => Marshal.WriteInt32(pointer, (int)(uint)value),
-                [typeof(ulong)] = (pointer, value) => Marshal.WriteInt64(pointer, (long)(ulong)value),
-                [typeof(sbyte)] = (pointer, value) => Marshal.WriteByte(pointer, (byte)(sbyte)value),
-                [typeof(short)] = (pointer, value) => Marshal.WriteInt16(pointer, (short)value),
-                [typeof(int)] = (pointer, value) => Marshal.WriteInt32(pointer, (int)value),
-                [typeof(long)] = (pointer, value) => Marshal.WriteInt64(pointer, (long)value),
-                [typeof(string)] = (pointer, value) => Marshal.WriteIntPtr(pointer, 0, Marshal.StringToCoTaskMemUni((string)value)),
-                [typeof(float)] = (pointer, value) => Marshal.WriteInt32(pointer, BitConverter.ToInt32(BitConverter.GetBytes((float)value), 0)),
-                [typeof(double)] = (pointer, value) => Marshal.WriteInt64(pointer, BitConverter.ToInt64(BitConverter.GetBytes((double)value), 0))
+                [typeof(bool)] = (ptr, value) => Marshal.WriteInt16(ptr, (bool)value ? (short)1 : (short)0),
+                [typeof(byte)] = (ptr, value) => Marshal.WriteByte(ptr, (byte)value),
+                [typeof(ushort)] = (ptr, value) => Marshal.WriteInt16(ptr, (short)(ushort)value),
+                [typeof(uint)] = (ptr, value) => Marshal.WriteInt32(ptr, (int)(uint)value),
+                [typeof(ulong)] = (ptr, value) => Marshal.WriteInt64(ptr, (long)(ulong)value),
+                [typeof(sbyte)] = (ptr, value) => Marshal.WriteByte(ptr, (byte)(sbyte)value),
+                [typeof(short)] = (ptr, value) => Marshal.WriteInt16(ptr, (short)value),
+                [typeof(int)] = (ptr, value) => Marshal.WriteInt32(ptr, (int)value),
+                [typeof(long)] = (ptr, value) => Marshal.WriteInt64(ptr, (long)value),
+                [typeof(string)] = (ptr, value) => Marshal.WriteIntPtr(ptr, 0, Marshal.StringToCoTaskMemUni((string)value)),
+                [typeof(float)] = (ptr, value) => Marshal.WriteInt32(ptr, BitConverter.ToInt32(BitConverter.GetBytes((float)value), 0)),
+                [typeof(double)] = (ptr, value) => Marshal.WriteInt64(ptr, BitConverter.ToInt64(BitConverter.GetBytes((double)value), 0))
             };
 
-            Action<PROPVARIANT> disposePtr = variant =>
-            {
-                Marshal.FreeCoTaskMem(variant.Ptr);
-            };
-            Action<PROPVARIANT> disposeBSTR = variant =>
-            {
-                Marshal.FreeBSTR(variant.Ptr);
-            };
-            Action<PROPVARIANT> disposeComObject = variant =>
-            {
-                Marshal.Release(variant.Ptr);
-            };
 
-            disposers = new Dictionary<VARTYPE, Action<PROPVARIANT>>()
+            disposers = new Dictionary<VARTYPE, Action<IntPtr>>()
             {
-                [VARTYPE.VT_LPSTR] = disposePtr,
-                [VARTYPE.VT_LPWSTR] = disposePtr,
-                [VARTYPE.VT_BSTR] = disposeBSTR,
-                [VARTYPE.VT_UNKNOWN] = disposeComObject,
-                [VARTYPE.VT_STREAM] = disposeComObject,
-                [VARTYPE.VT_STORAGE] = disposeComObject,
-                [VARTYPE.VT_VECTOR] = DisposeVector,
+                [VARTYPE.VT_LPSTR] = Marshal.FreeCoTaskMem,
+                [VARTYPE.VT_LPWSTR] = Marshal.FreeCoTaskMem,
+                [VARTYPE.VT_BSTR] = Marshal.FreeBSTR,
+                [VARTYPE.VT_UNKNOWN] = ptr => Marshal.Release(ptr),
+                [VARTYPE.VT_STREAM] = ptr => Marshal.Release(ptr),
+                [VARTYPE.VT_STORAGE] = ptr => Marshal.Release(ptr)
             };
         }
 
-        private static readonly IReadOnlyDictionary<VARTYPE, Func<PROPVARIANT, object>> decoders;
+        private const VARTYPE VectorFlags = VARTYPE.VT_ARRAY | VARTYPE.VT_VECTOR | VARTYPE.VT_BYREF;
 
+        private static readonly IReadOnlyDictionary<VARTYPE, Func<PROPVARIANT, object>> decoders;
         private static readonly IReadOnlyDictionary<Type, Func<object, PROPVARIANT>> encoders;
         private static readonly IReadOnlyDictionary<Type, int> elementSizes;
         private static readonly IReadOnlyDictionary<Type, VARTYPE> vectorTypes;
         private static readonly IReadOnlyDictionary<Type, Action<IntPtr, object>> elementEncoders;
+        private static readonly IReadOnlyDictionary<VARTYPE, Action<IntPtr>> disposers;
 
-        private static readonly IReadOnlyDictionary<VARTYPE, Action<PROPVARIANT>> disposers;
-
-        public static bool TryDecode<T>(ref PROPVARIANT variant, out T value)
+        public static object Decode(ref PROPVARIANT variant)
         {
-            const VARTYPE flagMask = VARTYPE.VT_ARRAY | VARTYPE.VT_VECTOR | VARTYPE.VT_BYREF;
-            bool hasFlag = (variant.Type & flagMask) != 0;
-            if ((hasFlag && decoders.TryGetValue(variant.Type & flagMask, out var decoder))
-                || decoders.TryGetValue(variant.Type, out decoder))
+            if ((variant.Type & VectorFlags) != 0)
             {
-                value = (T)decoder.Invoke(variant);
-                return true;
+                return DecodeVector(variant);
+            }
+            else if (decoders.TryGetValue(variant.Type, out var decoder))
+            {
+                return decoder.Invoke(variant);
             }
             else
             {
-                value = default(T);
-                return false;
+                throw new NotSupportedException($"Can not decode value of type {variant.Type}.");
             }
         }
 
         public static PROPVARIANT Encode(object value)
         {
             var type = value.GetType();
+
             if (type.IsArray)
             {
-                return EncodeArray((ICollection)value, type.GetElementType());
+                return EncodeVector((Array)value, type.GetElementType());
             }
             if (encoders.TryGetValue(type, out var encoder))
             {
@@ -164,103 +159,87 @@ namespace WIC
             }
             else
             {
-                throw new NotSupportedException("Value type is not supported");
+                throw new NotSupportedException($"Can not encode value of type {value.GetType()}.");
             }
         }
 
-        public static PROPVARIANT EncodeArray(ICollection array, Type elementType)
+        public static void Dispose(ref PROPVARIANT variant)
         {
-            if (!elementEncoders.TryGetValue(elementType, out var elementEncoder))
+            if ((variant.Type & VectorFlags) != 0)
             {
-                throw new NotSupportedException("Array element type is not supported");
+                DisposeVector(variant);
             }
-
-            int elementSize = elementSizes[elementType];
-
-            IntPtr vectorPtr = Marshal.AllocCoTaskMem(array.Count * elementSize);
-            IntPtr elementPtr = vectorPtr;
-            foreach (var value in array)
+            else if (disposers.TryGetValue(variant.Type, out var disposer))
             {
-                elementEncoder(elementPtr, value);
-                elementPtr += elementSize;
+                disposer.Invoke(variant.Ptr);
             }
-
-            return new PROPVARIANT()
-            {
-                Type = VARTYPE.VT_VECTOR | vectorTypes[elementType],
-                Vector = new PROPVARIANT_Vector()
-                {
-                    Length = array.Count,
-                    Ptr = vectorPtr
-                }
-            };
         }
 
-        private static object DecodeVector(PROPVARIANT variant)
+        private static Array DecodeVector(PROPVARIANT variant)
         {
             Type elementType;
             int elementSize;
             Func<IntPtr, object> elementDecoder;
 
-            switch (variant.Type & ~VARTYPE.VT_VECTOR)
+            switch (variant.Type & ~VectorFlags)
             {
                 case VARTYPE.VT_I1:
                     elementType = typeof(sbyte);
-                    elementDecoder = ptr => (object)(sbyte)Marshal.ReadByte(ptr);
+                    elementDecoder = ptr => (sbyte)Marshal.ReadByte(ptr);
                     elementSize = 1;
                     break;
 
                 case VARTYPE.VT_I2:
                     elementType = typeof(short);
-                    elementDecoder = ptr => (object)Marshal.ReadInt16(ptr);
+                    elementDecoder = ptr => Marshal.ReadInt16(ptr);
                     elementSize = 2;
                     break;
 
                 case VARTYPE.VT_I4:
                     elementType = typeof(int);
-                    elementDecoder = ptr => (object)Marshal.ReadInt32(ptr);
+                    elementDecoder = ptr => Marshal.ReadInt32(ptr);
                     elementSize = 4;
                     break;
 
                 case VARTYPE.VT_I8:
                     elementType = typeof(long);
-                    elementDecoder = ptr => (object)Marshal.ReadInt64(ptr);
+                    elementDecoder = ptr => Marshal.ReadInt64(ptr);
                     elementSize = 8;
                     break;
 
                 case VARTYPE.VT_UI1:
                     elementType = typeof(byte);
-                    elementDecoder = ptr => (object)Marshal.ReadByte(ptr);
+                    elementDecoder = ptr => Marshal.ReadByte(ptr);
                     elementSize = 1;
                     break;
 
                 case VARTYPE.VT_UI2:
                     elementType = typeof(ushort);
-                    elementDecoder = ptr => (object)(ushort)Marshal.ReadInt16(ptr);
+                    elementDecoder = ptr => (ushort)Marshal.ReadInt16(ptr);
                     elementSize = 2;
                     break;
 
                 case VARTYPE.VT_UI4:
                     elementType = typeof(uint);
-                    elementDecoder = ptr => (object)(uint)Marshal.ReadInt32(ptr);
+                    elementDecoder = ptr => (uint)Marshal.ReadInt32(ptr);
                     elementSize = 4;
                     break;
 
                 case VARTYPE.VT_UI8:
                     elementType = typeof(ulong);
-                    elementDecoder = ptr => (object)(ulong)Marshal.ReadInt64(ptr);
+                    elementDecoder = ptr => (ulong)Marshal.ReadInt64(ptr);
                     elementSize = 8;
                     break;
 
                 case VARTYPE.VT_LPSTR:
                     elementType = typeof(string);
-                    elementDecoder = Marshal.PtrToStringAnsi;
+                    elementDecoder = ptr => Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(ptr));
                     elementSize = IntPtr.Size;
                     break;
 
                 case VARTYPE.VT_LPWSTR:
                     elementType = typeof(string);
-                    elementDecoder = Marshal.PtrToStringUni;
+                    elementDecoder = ptr => Marshal.PtrToStringUni(Marshal.ReadIntPtr(ptr));
                     elementSize = IntPtr.Size;
                     break;
 
@@ -268,7 +247,7 @@ namespace WIC
                 case VARTYPE.VT_STREAM:
                 case VARTYPE.VT_STORAGE:
                     elementType = typeof(object);
-                    elementDecoder = Marshal.GetObjectForIUnknown;
+                    elementDecoder = ptr => Marshal.GetObjectForIUnknown(Marshal.ReadIntPtr(ptr));
                     elementSize = IntPtr.Size;
                     break;
 
@@ -288,72 +267,50 @@ namespace WIC
             return vector;
         }
 
-        public static void Dispose(ref PROPVARIANT variant)
+        public static PROPVARIANT EncodeVector(Array array, Type elementType)
         {
-            const VARTYPE flagMask = VARTYPE.VT_ARRAY | VARTYPE.VT_VECTOR | VARTYPE.VT_BYREF;
-            bool hasFlag = (variant.Type & flagMask) != (VARTYPE)0;
-            Action<PROPVARIANT> disposer;
-            if (disposers.TryGetValue(variant.Type, out disposer)
-                || (hasFlag && disposers.TryGetValue(variant.Type & flagMask, out disposer)))
+            if (!elementEncoders.TryGetValue(elementType, out var elementEncoder))
             {
-                disposer.Invoke(variant);
+                throw new NotSupportedException($"Can not encode array of {elementType}.");
             }
-            variant = new PROPVARIANT();
+
+            int elementSize = elementSizes[elementType];
+
+            IntPtr vectorPtr = Marshal.AllocCoTaskMem(array.Length * elementSize);
+            IntPtr elementPtr = vectorPtr;
+            foreach (var value in array)
+            {
+                elementEncoder(elementPtr, value);
+                elementPtr += elementSize;
+            }
+
+            return new PROPVARIANT()
+            {
+                Type = VARTYPE.VT_VECTOR | vectorTypes[elementType],
+                Vector = new PROPVARIANT_Vector()
+                {
+                    Length = array.Length,
+                    Ptr = vectorPtr
+                }
+            };
         }
 
         private static void DisposeVector(PROPVARIANT variant)
         {
-            Action<IntPtr> elementDisposer = null;
-
-            switch (variant.Type & ~VARTYPE.VT_VECTOR)
-            {
-                case VARTYPE.VT_BOOL:
-                case VARTYPE.VT_I1:
-                case VARTYPE.VT_I2:
-                case VARTYPE.VT_I4:
-                case VARTYPE.VT_I8:
-                case VARTYPE.VT_UI1:
-                case VARTYPE.VT_UI2:
-                case VARTYPE.VT_UI4:
-                case VARTYPE.VT_UI8:
-                case VARTYPE.VT_R4:
-                case VARTYPE.VT_R8:
-                    break;
-
-                case VARTYPE.VT_BSTR:
-                    elementDisposer = Marshal.FreeBSTR;
-                    break;
-
-                case VARTYPE.VT_LPSTR:
-                case VARTYPE.VT_LPWSTR:
-                    elementDisposer = Marshal.FreeCoTaskMem;
-                    break;
-
-                case VARTYPE.VT_UNKNOWN:
-                case VARTYPE.VT_STREAM:
-                case VARTYPE.VT_STORAGE:
-                    elementDisposer = ptr => { Marshal.Release(ptr); };
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
-
-            IntPtr vectorPtr = variant.Vector.Ptr;
-
             // if necessary, dispose each of the vector's elements:
-            if (elementDisposer != null)
+            if (disposers.TryGetValue(variant.Type & ~VectorFlags, out var disposer))
             {
-                IntPtr elementPtr = vectorPtr;
-                for (int i = 0, n = variant.Vector.Length; i < n; ++i)
+                IntPtr elementPtr = variant.Vector.Ptr;
+                for (int i = 0; i < variant.Vector.Length; i++)
                 {
-                    elementDisposer.Invoke(Marshal.ReadIntPtr(elementPtr));
+                    IntPtr elementValuePtr = Marshal.ReadIntPtr(elementPtr);
+                    disposer.Invoke(elementValuePtr);
                     elementPtr += IntPtr.Size;
                 }
             }
 
             // finally, dispose the vector array itself:
-            Marshal.FreeCoTaskMem(vectorPtr);
+            Marshal.FreeCoTaskMem(variant.Vector.Ptr);
         }
     }
 }

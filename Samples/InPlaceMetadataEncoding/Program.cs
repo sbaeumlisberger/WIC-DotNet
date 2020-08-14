@@ -35,8 +35,8 @@ namespace InPlaceMetadataEncoding
             {
                 Console.WriteLine("The file format does not support the requested metadata.");
             }
-            catch (Exception ex) when (ex.HResult == WinCodecError.TOOMUCHMETADATA
-                || ex.HResult == WinCodecError.INSUFFICIENTBUFFER
+            catch (Exception ex) when (ex.HResult == WinCodecError.TOO_MUCH_METADATA
+                || ex.HResult == WinCodecError.INSUFFICIENT_BUFFER
                 || ex.HResult == WinCodecError.IMAGE_METADATA_HEADER_UNKNOWN
                 || ex.HResult == WinCodecError.UNSUPPORTED_OPERATION)
             {

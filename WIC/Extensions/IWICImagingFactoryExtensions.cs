@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 
 namespace WIC
 {
@@ -45,12 +46,17 @@ namespace WIC
             }
         }
 
-        public static IWICBitmapDecoder CreateDecoderFromStream(this IWICImagingFactory imagingFactory, IStream pIStream, WICDecodeOptions metadataOptions, Guid? pguidVendor = null)
+        public static IWICBitmapDecoder CreateDecoderFromStream(this IWICImagingFactory imagingFactory, IStream stream, WICDecodeOptions metadataOptions, Guid? pguidVendor = null)
         {
             using (var pguidVendorPtr = CoTaskMemPtr.From(pguidVendor))
             {
-                return imagingFactory.CreateDecoderFromStream(pIStream, pguidVendorPtr, metadataOptions);
+                return imagingFactory.CreateDecoderFromStream(stream, pguidVendorPtr, metadataOptions);
             }
+        }
+
+        public static IWICBitmapDecoder CreateDecoderFromStream(this IWICImagingFactory imagingFactory, Stream stream, WICDecodeOptions metadataOptions, Guid? pguidVendor = null)
+        {
+            return imagingFactory.CreateDecoderFromStream(stream.AsCOMStream(), metadataOptions, pguidVendor);            
         }
 
         public static IWICBitmapEncoder CreateEncoder(this IWICImagingFactory factory, Guid guidContainerFormat, Guid? pguidVendor = null)
