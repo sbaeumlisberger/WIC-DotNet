@@ -25,7 +25,7 @@ namespace WIC
             [In] WICDecodeOptions metadataOptions);
 
         IWICComponentInfo CreateComponentInfo(
-            [In] Guid clsidComponent);
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsidComponent);
 
         IWICBitmapDecoder CreateDecoder(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidContainerFormat,
