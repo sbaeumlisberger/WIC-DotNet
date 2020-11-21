@@ -42,7 +42,7 @@ namespace WIC
 
         void GetPixelFormats(
             [In] int cFormats,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] pPixelFormatGUIDs,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[]? pPixelFormatGUIDs,
             [Out] out int pcActual);
 
         IWICFormatConverter CreateInstance();

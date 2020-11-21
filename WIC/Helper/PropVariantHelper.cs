@@ -22,8 +22,8 @@ namespace WIC
                 [VARTYPE.VT_I2] = variant => variant.I2,
                 [VARTYPE.VT_I4] = variant => variant.I4,
                 [VARTYPE.VT_I8] = variant => variant.I8,
-                [VARTYPE.VT_LPSTR] = variant => Marshal.PtrToStringAnsi(variant.Ptr),
-                [VARTYPE.VT_LPWSTR] = variant => Marshal.PtrToStringUni(variant.Ptr),
+                [VARTYPE.VT_LPSTR] = variant => Marshal.PtrToStringAnsi(variant.Ptr)!,
+                [VARTYPE.VT_LPWSTR] = variant => Marshal.PtrToStringUni(variant.Ptr)!,
                 [VARTYPE.VT_BSTR] = variant => Marshal.PtrToStringBSTR(variant.Ptr),
                 [VARTYPE.VT_R4] = variant => variant.R4,
                 [VARTYPE.VT_R8] = variant => variant.R8,
@@ -151,7 +151,7 @@ namespace WIC
 
             if (type.IsArray)
             {
-                return EncodeVector((Array)value, type.GetElementType());
+                return EncodeVector((Array)value, type.GetElementType()!);
             }
             if (encoders.TryGetValue(type, out var encoder))
             {
@@ -233,13 +233,13 @@ namespace WIC
 
                 case VARTYPE.VT_LPSTR:
                     elementType = typeof(string);
-                    elementDecoder = ptr => Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(ptr));
+                    elementDecoder = ptr => Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(ptr))!;
                     elementSize = IntPtr.Size;
                     break;
 
                 case VARTYPE.VT_LPWSTR:
                     elementType = typeof(string);
-                    elementDecoder = ptr => Marshal.PtrToStringUni(Marshal.ReadIntPtr(ptr));
+                    elementDecoder = ptr => Marshal.PtrToStringUni(Marshal.ReadIntPtr(ptr))!;
                     elementSize = IntPtr.Size;
                     break;
 

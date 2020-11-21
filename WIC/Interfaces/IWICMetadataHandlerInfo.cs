@@ -44,17 +44,17 @@ namespace WIC
 
         void GetContainerFormats(
              [In] int cContainerFormats,
-             [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] pguidContainerFormats,
+             [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[]? pguidContainerFormats,
              [Out] out int pcchActual);
 
         void GetDeviceManufacturer(
             [In] int cchDeviceManufacturer,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzDeviceManufacturer,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzDeviceManufacturer,
             [Out] out int pcchActual);
 
         void GetDeviceModels(
             [In] int cchDeviceModels,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzDeviceModels,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzDeviceModels,
             [Out] out int pcchActual);
 
         bool DoesRequireFullStream();

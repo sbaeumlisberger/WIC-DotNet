@@ -1,6 +1,6 @@
 ﻿namespace WIC
 {
-    internal delegate void FetchIntoBuffer<T>(int size, T[] buffer, out int length);
+    internal delegate void FetchIntoBuffer<T>(int size, T[]? buffer, out int length);
 
     internal static class FetchIntoBufferHelper
     {
@@ -23,13 +23,9 @@
             {
                 return new string(buffer, 0, length);
             }
-            else if (length == 0)
-            {
-                return string.Empty;
-            }
             else
             {
-                return null;
+                return string.Empty;
             }
         }
     }

@@ -9,7 +9,7 @@ namespace WIC
     public interface IWICBitmapFrameEncode
     {
         void Initialize(
-            [In] IPropertyBag2 pIEncoderOptions);
+            [In] IPropertyBag2? pIEncoderOptions = null);
 
         void SetSize(
             [In] int uiWidth,

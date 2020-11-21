@@ -2,7 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0-windows</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
     <Authors>S. Bäumlisberger</Authors>
     <Company></Company>
     <Copyright>© 2020 S. Bäumlisberger</Copyright>
@@ -22,4 +24,8 @@
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+  </ItemGroup>
 </Project>

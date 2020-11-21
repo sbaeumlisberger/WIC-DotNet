@@ -44,32 +44,32 @@ namespace WIC
 
         void GetPixelFormats(
             [In] int cFormats,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] pguidPixelFormats,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[]? pguidPixelFormats,
             [Out] out int pcActual);
 
         void GetColorManagementVersion(
             [In] int cchColorManagementVersion,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzColorManagementVersion,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzColorManagementVersion,
             [Out] out int pcchActual);
 
         void GetDeviceManufacturer(
             [In] int cchDeviceManufacturer,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzDeviceManufacturer,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzDeviceManufacturer,
             [Out] out int pcchActual);
 
         void GetDeviceModels(
             [In] int cchDeviceModels,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzDeviceModels,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzDeviceModels,
             [Out] out int pcchActual);
 
         void GetMimeTypes(
             [In] int cchMimeTypes,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzMimeTypes,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzMimeTypes,
             [Out] out int pcchActual);
 
         void GetFileExtensions(
             [In] int cchFileExtensions,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzFileExtensions,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzFileExtensions,
             [Out] out int pcchActual);
 
         bool DoesSupportAnimation();

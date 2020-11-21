@@ -31,7 +31,7 @@ namespace WIC
 
         void CreateNewFrame(
             [Out] out IWICBitmapFrameEncode ppIFrameEncode,
-            [In, Out] IPropertyBag2 ppIEncoderOptions);
+            [In, Out] ref IPropertyBag2? ppIEncoderOptions);
 
         void Commit();
 

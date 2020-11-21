@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace WIC
 {
@@ -7,7 +8,7 @@ namespace WIC
     {
         public static IWICMetadataBlockReader AsMetadataBlockReader(this IWICBitmapFrameDecode bitmapFrameDecode)
         {
-            return bitmapFrameDecode as IWICMetadataBlockReader;
+            return (IWICMetadataBlockReader)bitmapFrameDecode;
         }
 
         public static IWICColorContext[] GetColorContexts(this IWICBitmapFrameDecode bitmapFrameDecode)
@@ -29,11 +30,6 @@ namespace WIC
             }
 
             return colorContexts;
-        }
-
-        public static void Initialize(this IWICBitmapFrameEncode bitmapFrameEncode, IPropertyBag2 pIEncoderOptions = null)
-        {
-            bitmapFrameEncode.Initialize(pIEncoderOptions);
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.IO;
 
 namespace WIC
 {
@@ -7,14 +8,26 @@ namespace WIC
     {
         public static IWICMetadataBlockWriter AsMetadataBlockWriter(this IWICBitmapEncoder bitmapEncoder)
         {
-            return bitmapEncoder as IWICMetadataBlockWriter;
+            return (IWICMetadataBlockWriter)bitmapEncoder;
         }
 
-        public static IWICBitmapFrameEncode CreateNewFrame(this IWICBitmapEncoder bitmapEncoder, IPropertyBag2 ppIEncoderOptions = null)
+        public static IWICBitmapFrameEncode CreateNewFrame(this IWICBitmapEncoder bitmapEncoder, out IPropertyBag2 encoderOptions)
         {
-            IWICBitmapFrameEncode ppIFrameEncode;
-            bitmapEncoder.CreateNewFrame(out ppIFrameEncode, ppIEncoderOptions);
+            IPropertyBag2? encoderOptionsNullable = null;
+            bitmapEncoder.CreateNewFrame(out IWICBitmapFrameEncode frameEncode, ref encoderOptionsNullable);
+            encoderOptions = encoderOptionsNullable!;
+            return frameEncode;
+        }
+
+        public static IWICBitmapFrameEncode CreateNewFrame(this IWICBitmapEncoder bitmapEncoder)
+        {
+            bitmapEncoder.CreateNewFrame(out IWICBitmapFrameEncode ppIFrameEncode, null);
             return ppIFrameEncode;
+        }
+
+        public static void Initialize(this IWICBitmapEncoder bitmapEncoder, Stream stream, WICBitmapEncoderCacheOption cacheOption)
+        {
+            bitmapEncoder.Initialize(stream.AsCOMStream(), cacheOption);
         }
     }
 }
