@@ -52,7 +52,7 @@ namespace WIC
             }
             finally
             {
-                PropVariantHelper.Dispose(ref variant);
+                PropVariantHelper.Free(ref variant);
             }
         }
 
@@ -92,7 +92,7 @@ namespace WIC
             }
             finally
             {
-                PropVariantHelper.Dispose(ref variant);
+                PropVariantHelper.Free(ref variant);
             }
         }
 

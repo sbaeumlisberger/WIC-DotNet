@@ -163,7 +163,7 @@ namespace WIC
             }
         }
 
-        public static void Dispose(ref PROPVARIANT variant)
+        public static void Free(ref PROPVARIANT variant)
         {
             if ((variant.Type & VectorFlags) != 0)
             {
