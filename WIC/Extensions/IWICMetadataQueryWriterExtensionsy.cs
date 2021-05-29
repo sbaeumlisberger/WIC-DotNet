@@ -37,7 +37,7 @@ namespace WIC
             }
             finally
             {
-                PropVariantHelper.Free(ref variant);
+                PropVariantHelper.Free(variant);
             }
         }
 

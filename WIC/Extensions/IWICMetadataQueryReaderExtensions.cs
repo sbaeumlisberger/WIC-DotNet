@@ -48,11 +48,11 @@ namespace WIC
             try
             {
                 metadataQueryReader.GetMetadataByName(name, ref variant);
-                return PropVariantHelper.Decode(ref variant);
+                return PropVariantHelper.Decode(variant);
             }
             finally
             {
-                PropVariantHelper.Free(ref variant);
+                PropVariantHelper.Free(variant);
             }
         }
 
@@ -82,7 +82,7 @@ namespace WIC
             try
             {
                 metadataQueryReader.GetMetadataByName(name, ref variant);
-                value = PropVariantHelper.Decode(ref variant);
+                value = PropVariantHelper.Decode(variant);
                 return true;
             }
             catch (COMException ex) when (ex.ErrorCode == WinCodecError.PROPERTY_NOT_FOUND)
@@ -92,7 +92,7 @@ namespace WIC
             }
             finally
             {
-                PropVariantHelper.Free(ref variant);
+                PropVariantHelper.Free(variant);
             }
         }
 
