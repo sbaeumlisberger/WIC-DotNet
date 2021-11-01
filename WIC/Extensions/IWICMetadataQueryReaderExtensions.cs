@@ -48,11 +48,11 @@ namespace WIC
             try
             {
                 metadataQueryReader.GetMetadataByName(name, ref variant);
-                return PropVariantHelper.Decode(ref variant);
+                return PropVariantHelper.Decode(variant);
             }
             finally
             {
-                PropVariantHelper.Dispose(ref variant);
+                PropVariantHelper.Free(variant);
             }
         }
 
@@ -67,7 +67,7 @@ namespace WIC
         /// <br/>
         /// If multiple blocks or items exist that are expressed by the same query expression, the first metadata block or item found will be returned.
         /// </remarks>
-        public static bool TryGetMetadataByName(this IWICMetadataQueryReader metadataQueryReader, string name, out object value)
+        public static bool TryGetMetadataByName(this IWICMetadataQueryReader metadataQueryReader, string name, out object? value)
         {
             if (metadataQueryReader is null)
             {
@@ -82,7 +82,7 @@ namespace WIC
             try
             {
                 metadataQueryReader.GetMetadataByName(name, ref variant);
-                value = PropVariantHelper.Decode(ref variant);
+                value = PropVariantHelper.Decode(variant);
                 return true;
             }
             catch (COMException ex) when (ex.ErrorCode == WinCodecError.PROPERTY_NOT_FOUND)
@@ -92,7 +92,7 @@ namespace WIC
             }
             finally
             {
-                PropVariantHelper.Dispose(ref variant);
+                PropVariantHelper.Free(variant);
             }
         }
 

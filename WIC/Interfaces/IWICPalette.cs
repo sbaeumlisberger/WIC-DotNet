@@ -30,7 +30,7 @@ namespace WIC
 
         void GetColors(
             [In] int cCount,
-            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeParamIndex = 0)] int[] pColors,
+            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeParamIndex = 0)] int[]? pColors,
             [Out] out int pcActualColors);
 
         bool IsBlackWhite();

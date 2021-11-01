@@ -23,7 +23,7 @@ namespace WIC
                 var patterns = new WICBitmapPattern[count];
                 for (int i = 0, stride = Marshal.SizeOf(typeof(WICBitmapPatternRaw)); i < count; ++i, at += stride)
                 {
-                    var raw = (WICBitmapPatternRaw)Marshal.PtrToStructure(at, typeof(WICBitmapPatternRaw));
+                    var raw = (WICBitmapPatternRaw)Marshal.PtrToStructure(at, typeof(WICBitmapPatternRaw))!;
                     int length = raw.Length;
                     patterns[i] = new WICBitmapPattern()
                     {
@@ -33,8 +33,8 @@ namespace WIC
                         Mask = new byte[length],
                         EndOfStream = raw.EndOfStream
                     };
-                    Marshal.Copy(raw.Pattern, patterns[i].Pattern, 0, length);
-                    Marshal.Copy(raw.Mask, patterns[i].Mask, 0, length);
+                    Marshal.Copy(raw.Pattern, patterns[i].Pattern!, 0, length);
+                    Marshal.Copy(raw.Mask, patterns[i].Mask!, 0, length);
                 }
                 return patterns;
             }

@@ -7,8 +7,8 @@ namespace WIC
     {
         public long Position;
         public int Length;
-        public byte[] Pattern;
-        public byte[] Mask;
+        public byte[]? Pattern;
+        public byte[]? Mask;
         public bool EndOfStream;
     }
 

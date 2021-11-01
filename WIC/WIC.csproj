@@ -2,7 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0-windows</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
     <Authors>S. Bäumlisberger</Authors>
     <Company></Company>
     <Copyright>© 2020 S. Bäumlisberger</Copyright>
@@ -14,7 +16,7 @@
     <PackageTags>windows imaging image-processing windows-imaging-component wic com-interop bitmap docoding encoding</PackageTags>
     <Product>WIC</Product>
     <Description>A .NET Standard library that makes the Windows Imaging Component (WIC) available to managed code so that it can be used in .NET Core, .NET Framework and UWP (.NET Native). The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface.</Description>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
     <PackageId>WIC.DotNet</PackageId>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -22,4 +24,8 @@
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildProjectDirectory)=C:\</PathMap>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+  </ItemGroup>
 </Project>

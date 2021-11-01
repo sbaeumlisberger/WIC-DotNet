@@ -14,15 +14,29 @@ namespace WIC
             }
         }
 
-        public static byte[] GetPixels(this IWICBitmapSource bitmapSource) 
+        public static IWICPalette? GetColorPalette(this IWICBitmapSource bitmapSource)
         {
-            var wic = new WICImagingFactory();
-            Guid pixelFormat = bitmapSource.GetPixelFormat();
-            var pixelFormatInfo = (IWICPixelFormatInfo)wic.CreateComponentInfo(pixelFormat);
-            int bytesPerPixel = pixelFormatInfo.GetBitsPerPixel() / 8;
+            try
+            {
+                var wic = new WICImagingFactory();
+                IWICPalette colorPalette = wic.CreatePalette();
+                bitmapSource.CopyPalette(colorPalette);
+                return colorPalette;
+            }
+            catch (Exception exception) when (exception.HResult == WinCodecError.PALETTE_UNAVAILABLE)
+            {
+                // no color palette available
+                return null;
+            }
+        }
+
+        public static byte[] GetPixels(this IWICBitmapSource bitmapSource)
+        {
+            var pixelFormatInfo = bitmapSource.GetPixelFormatInfo();
+            int bitsPerPixel = pixelFormatInfo.GetBitsPerPixel();
             bitmapSource.GetSize(out int width, out int height);
-            int stride = width * bytesPerPixel;
-            byte[] buffer = new byte[width * height * bytesPerPixel];
+            int stride = width * bitsPerPixel + 7 / 8;
+            byte[] buffer = new byte[height * stride];
             bitmapSource.CopyPixels(stride, buffer);
             return buffer;
         }
@@ -37,6 +51,14 @@ namespace WIC
         {
             bitmapSource.GetResolution(out double dpiX, out double dpiY);
             return new Resolution(dpiX, dpiY);
+        }
+
+        public static IWICPixelFormatInfo GetPixelFormatInfo(this IWICBitmapSource bitmapSource)
+        {
+            var wic = new WICImagingFactory();
+            Guid pixelFormat = bitmapSource.GetPixelFormat();
+            var pixelFormatInfo = (IWICPixelFormatInfo)wic.CreateComponentInfo(pixelFormat);
+            return pixelFormatInfo;
         }
     }
 }

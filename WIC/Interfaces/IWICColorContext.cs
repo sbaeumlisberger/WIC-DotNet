@@ -22,7 +22,7 @@ namespace WIC
 
         void GetProfileBytes(
             [In] int cbBuffer,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 0)] byte[] pbBuffer,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 0)] byte[]? pbBuffer,
             [Out] out int pcbActual);
 
         ExifColorSpace GetExifColorSpace();

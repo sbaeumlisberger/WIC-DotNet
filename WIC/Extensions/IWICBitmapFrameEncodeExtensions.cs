@@ -7,12 +7,7 @@ namespace WIC
     {
         public static IWICMetadataBlockWriter AsMetadataBlockWriter(this IWICBitmapFrameEncode bitmapFrameEncode)
         {
-            return bitmapFrameEncode as IWICMetadataBlockWriter;
-        }
-
-        public static void Initialize(this IWICBitmapFrameEncode bitmapFrameEncode, IPropertyBag2 pIEncoderOptions = null)
-        {
-            bitmapFrameEncode.Initialize(pIEncoderOptions);
+            return (IWICMetadataBlockWriter)bitmapFrameEncode;
         }
 
         public static void SetColorContexts(this IWICBitmapFrameEncode bitmapFrameEncode, IWICColorContext[] colorContexts)

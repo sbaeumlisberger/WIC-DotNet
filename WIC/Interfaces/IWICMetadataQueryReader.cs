@@ -32,7 +32,7 @@ namespace WIC
         /// </remarks>
         void GetLocation(
             [In] int cchMaxLength,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzNamespace,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzNamespace,
             [Out] out int pcchActualLength);
 
         /// <summary>
