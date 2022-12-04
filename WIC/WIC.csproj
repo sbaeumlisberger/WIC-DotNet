@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <Authors>S. Bäumlisberger</Authors>
     <Company></Company>
-    <Copyright>© 2020 S. Bäumlisberger</Copyright>
+    <Copyright>© 2021 S. Bäumlisberger</Copyright>
     <PackageProjectUrl>https://github.com/sbaeumlisberger/WIC-DotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sbaeumlisberger/WIC-DotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
