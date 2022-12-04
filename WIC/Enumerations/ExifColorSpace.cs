@@ -4,5 +4,6 @@
     {
         SRGB = 1,
         AdobeRGB = 2,
+        Uncalibrated = 65535
     }
 }
