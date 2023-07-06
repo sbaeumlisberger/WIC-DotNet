@@ -42,17 +42,17 @@ namespace WIC
             if (name is null)
             {
                 throw new ArgumentNullException(nameof(name));
-            }
+            }                       
 
-            var variant = new PROPVARIANT();
+            var propvariant = new PROPVARIANT();
             try
             {
-                metadataQueryReader.GetMetadataByName(name, ref variant);
-                return PropVariantHelper.Decode(variant);
+                metadataQueryReader.GetMetadataByName(name, ref propvariant);
+                return PropVariantHelper.Decode(propvariant);
             }
             finally
             {
-                PropVariantHelper.Free(variant);
+                PropVariantHelper.Free(ref propvariant);
             }
         }
 
@@ -78,11 +78,11 @@ namespace WIC
                 throw new ArgumentNullException(nameof(name));
             }
 
-            var variant = new PROPVARIANT();
+            var propvariant = new PROPVARIANT();
             try
             {
-                metadataQueryReader.GetMetadataByName(name, ref variant);
-                value = PropVariantHelper.Decode(variant);
+                metadataQueryReader.GetMetadataByName(name, ref propvariant);
+                value = PropVariantHelper.Decode(propvariant);
                 return true;
             }
             catch (COMException ex) when (ex.ErrorCode == WinCodecError.PROPERTY_NOT_FOUND)
@@ -92,7 +92,7 @@ namespace WIC
             }
             finally
             {
-                PropVariantHelper.Free(variant);
+                PropVariantHelper.Free(ref propvariant);
             }
         }
 
@@ -107,6 +107,5 @@ namespace WIC
         {
             return metadataQueryReader.GetEnumerator().AsEnumerable();
         }
-
     }
 }

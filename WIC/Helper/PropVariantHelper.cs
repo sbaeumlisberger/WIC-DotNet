@@ -93,20 +93,9 @@ namespace WIC
             }
         }
 
-        public static void Free(PROPVARIANT variant)
+        public static void Free(ref PROPVARIANT variant)
         {
-            if (variant.Type == VARTYPE.VT_BLOB)
-            {
-                Marshal.FreeCoTaskMem(variant.Vector.Ptr);
-            }
-            else if ((variant.Type & VectorFlags) != 0)
-            {
-                FreeVector(variant);
-            }
-            else
-            {
-                FreeValue(variant.Type, variant.Ptr);
-            }
+            PropVariantClear(ref variant);
         }
 
         private static WICBlob DecodeBlob(PROPVARIANT variant)
@@ -302,33 +291,7 @@ namespace WIC
             };
         }
 
-        private static void FreeVector(PROPVARIANT variant)
-        {
-            // dispose each of the vector's elements:
-            VARTYPE elementType = variant.Type & ~VectorFlags;
-            IntPtr elementPtr = variant.Vector.Ptr;
-            for (int i = 0; i < variant.Vector.Length; i++)
-            {
-                IntPtr elementValuePtr = Marshal.ReadIntPtr(elementPtr);
-                FreeValue(elementType, elementValuePtr);
-                elementPtr += IntPtr.Size;
-            }
-
-            // finally, dispose the vector array itself:
-            Marshal.FreeCoTaskMem(variant.Vector.Ptr);
-        }
-
-        private static void FreeValue(VARTYPE type, IntPtr ptr)
-        {
-            switch (type)
-            {
-                case VARTYPE.VT_LPSTR: Marshal.FreeCoTaskMem(ptr); break;
-                case VARTYPE.VT_LPWSTR: Marshal.FreeCoTaskMem(ptr); break;
-                case VARTYPE.VT_BSTR: Marshal.FreeBSTR(ptr); break;
-                case VARTYPE.VT_UNKNOWN: Marshal.Release(ptr); break;
-                case VARTYPE.VT_STREAM: Marshal.Release(ptr); break;
-                case VARTYPE.VT_STORAGE: Marshal.Release(ptr); break;
-            };
-        }
+        [DllImport("Ole32.dll", CharSet = CharSet.Unicode)]
+        private static extern int PropVariantClear(ref PROPVARIANT pvar);
     }
 }

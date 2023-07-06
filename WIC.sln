@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29020.237
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WIC", "WIC\WIC.csproj", "{9D77F053-8DC1-4128-A447-CB0D67E686B4}"
 EndProject
@@ -18,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncoderOptions", "Samples\EncoderOptions\EncoderOptions\EncoderOptions.csproj", "{852CBD96-E883-48EB-8194-B8EA02A56928}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoderOptions", "Samples\EncoderOptions\EncoderOptions\EncoderOptions.csproj", "{852CBD96-E883-48EB-8194-B8EA02A56928}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WIC.Test", "WIC.Test\WIC.Test.csproj", "{CCF7B56F-62B0-4E3D-A41C-54AB0004B01E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{852CBD96-E883-48EB-8194-B8EA02A56928}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{852CBD96-E883-48EB-8194-B8EA02A56928}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{852CBD96-E883-48EB-8194-B8EA02A56928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF7B56F-62B0-4E3D-A41C-54AB0004B01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF7B56F-62B0-4E3D-A41C-54AB0004B01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF7B56F-62B0-4E3D-A41C-54AB0004B01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF7B56F-62B0-4E3D-A41C-54AB0004B01E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

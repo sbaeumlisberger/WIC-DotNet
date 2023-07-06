@@ -30,14 +30,14 @@ namespace WIC
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var variant = PropVariantHelper.Encode(value);
+            var propvariant = PropVariantHelper.Encode(value);
             try
             {
-                metadataQueryWriter.SetMetadataByName(name, ref variant);
+                metadataQueryWriter.SetMetadataByName(name, ref propvariant);
             }
             finally
             {
-                PropVariantHelper.Free(variant);
+                PropVariantHelper.Free(ref propvariant);
             }
         }
 
