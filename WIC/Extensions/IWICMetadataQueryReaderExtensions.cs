@@ -42,7 +42,7 @@ namespace WIC
             if (name is null)
             {
                 throw new ArgumentNullException(nameof(name));
-            }                       
+            }
 
             var propvariant = new PROPVARIANT();
             try
@@ -81,14 +81,17 @@ namespace WIC
             var propvariant = new PROPVARIANT();
             try
             {
-                metadataQueryReader.GetMetadataByName(name, ref propvariant);
+                int hresult = ((IWICMetadataQueryReaderHRESULT)metadataQueryReader).GetMetadataByName(name, ref propvariant);
+
+                if (hresult == WinCodecError.PROPERTY_NOT_FOUND)
+                {
+                    value = null;
+                    return false;
+                }
+
+                Marshal.ThrowExceptionForHR(hresult);
                 value = PropVariantHelper.Decode(propvariant);
                 return true;
-            }
-            catch (COMException ex) when (ex.ErrorCode == WinCodecError.PROPERTY_NOT_FOUND)
-            {
-                value = null;
-                return false;
             }
             finally
             {

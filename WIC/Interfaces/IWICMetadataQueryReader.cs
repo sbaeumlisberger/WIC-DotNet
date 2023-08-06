@@ -45,9 +45,7 @@ namespace WIC
         /// <br/>
         /// If multiple blocks or items exist that are expressed by the same query expression, the first metadata block or item found will be returned.
         /// </remarks>
-        void GetMetadataByName(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string wzName,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
+        void GetMetadataByName([In, MarshalAs(UnmanagedType.LPWStr)] string wzName, [In, Out] ref PROPVARIANT pvarValue);
 
         /// <summary>
         /// Gets an enumerator of all metadata items at the current relative location within the metadata hierarchy.
@@ -56,6 +54,24 @@ namespace WIC
         /// <remarks>
         /// The retrieved enumerator only contains query strings for the metadata blocks and items in the current level of the hierarchy.
         /// </remarks>
+        IEnumString GetEnumerator();
+    }
+
+    [ComImport]
+    [Guid(IID.IWICMetadataQueryReader)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IWICMetadataQueryReaderHRESULT
+    {
+        Guid GetContainerFormat();
+
+        void GetLocation(
+            [In] int cchMaxLength,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzNamespace,
+            [Out] out int pcchActualLength);
+
+        [PreserveSig]
+        int GetMetadataByName([In, MarshalAs(UnmanagedType.LPWStr)] string wzName, [In, Out] ref PROPVARIANT pvarValue);
+
         IEnumString GetEnumerator();
     }
 }
