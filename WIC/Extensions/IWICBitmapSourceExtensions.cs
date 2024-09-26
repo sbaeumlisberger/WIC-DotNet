@@ -35,7 +35,7 @@ namespace WIC
             var pixelFormatInfo = bitmapSource.GetPixelFormatInfo();
             int bitsPerPixel = pixelFormatInfo.GetBitsPerPixel();
             bitmapSource.GetSize(out int width, out int height);
-            int stride = width * bitsPerPixel + 7 / 8;
+            int stride = (width * bitsPerPixel + 7) / 8;
             byte[] buffer = new byte[height * stride];
             bitmapSource.CopyPixels(stride, buffer);
             return buffer;
