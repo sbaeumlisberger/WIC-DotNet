@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
-namespace WIC
+namespace WIC;
+
+[GeneratedComInterface]
+[Guid(IID.IPropertyBag2)]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+public partial interface IPropertyBag2
 {
-    [ComImport]
-    [Guid(IID.IPropertyBag2)]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IPropertyBag2
-    {
-       int CountProperties();
+    void Read(
+        uint cProperties,
+        [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag,
+        IErrorLog? pErrLog,
+        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] pvarValue,
+        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[] phrError);
 
-       void GetPropertyInfo(
-            [In] int iProperty,
-            [In] int cProperties,
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPBAG2[] pPropBag,
-            [Out] out int pcProperties);
+    void Write(
+        uint cProperties,
+        [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag,
+        [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] pvarValue);
 
-        void LoadObject(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pstrName,
-            [In] int dwHint,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkObject,
-            [In] IErrorLog? pErrLog);
+    void CountProperties(out uint pcProperties);
 
-        void Read(
-            [In] int cProperties,
-            [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag,
-            [In] IErrorLog? pErrLog,
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] object?[] pvarValue,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[] phrError);
+    void GetPropertyInfo(
+        uint iProperty, 
+        uint cProperties,
+        [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag,
+        out uint pcProperties);
 
-        void Write(
-            [In] int cProperties,
-            [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag,
-            [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] object?[] pvarValue);
-    }
+    void LoadObject(
+        [MarshalAs(UnmanagedType.LPWStr)] string pstrName,
+        uint dwHint,
+        IntPtr pUnkObject,
+        IErrorLog? pErrLog);
 }

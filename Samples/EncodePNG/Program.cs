@@ -21,7 +21,7 @@ namespace Sample
             const int height = 256;
             const int bytesPerPixel = 3;
 
-            var wif = new WICImagingFactory();
+            var wif = WICImagingFactory.Create();
 
             // find the PNG encoder information
             var pngEncoderInfo = EnumEncoders(wif)

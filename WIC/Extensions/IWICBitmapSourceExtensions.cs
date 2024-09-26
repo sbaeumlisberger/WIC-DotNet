@@ -18,7 +18,7 @@ namespace WIC
         {
             try
             {
-                var wic = new WICImagingFactory();
+                var wic = WICImagingFactory.Create();
                 IWICPalette colorPalette = wic.CreatePalette();
                 bitmapSource.CopyPalette(colorPalette);
                 return colorPalette;
@@ -55,7 +55,7 @@ namespace WIC
 
         public static IWICPixelFormatInfo GetPixelFormatInfo(this IWICBitmapSource bitmapSource)
         {
-            var wic = new WICImagingFactory();
+            var wic = WICImagingFactory.Create();
             Guid pixelFormat = bitmapSource.GetPixelFormat();
             var pixelFormatInfo = (IWICPixelFormatInfo)wic.CreateComponentInfo(pixelFormat);
             return pixelFormatInfo;

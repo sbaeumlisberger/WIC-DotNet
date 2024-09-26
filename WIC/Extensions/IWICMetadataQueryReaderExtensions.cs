@@ -33,7 +33,7 @@ namespace WIC
         /// <br/>
         /// If multiple blocks or items exist that are expressed by the same query expression, the first metadata block or item found will be returned.
         /// </remarks>
-        public static object GetMetadataByName(this IWICMetadataQueryReader metadataQueryReader, string name)
+        public static object? GetMetadataByName(this IWICMetadataQueryReader metadataQueryReader, string name)
         {
             if (metadataQueryReader is null)
             {

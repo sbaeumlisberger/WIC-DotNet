@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICBitmapLock)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICBitmapLock
+    public partial interface IWICBitmapLock
     {
         void GetSize(
-            [Out] out int puiWidth,
-            [Out] out int puiHeight);
+            out int puiWidth,
+            out int puiHeight);
 
         int GetStride();
 
         IntPtr GetDataPointer( // byte*
-            [Out] out int pcbBufferSize);
+            out int pcbBufferSize);
 
         Guid GetPixelFormat();
     }

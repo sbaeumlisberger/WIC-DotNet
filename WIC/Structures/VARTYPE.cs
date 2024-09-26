@@ -3,7 +3,7 @@
 namespace WIC
 {
     [Flags]
-    public enum VARTYPE : short
+    public enum VARTYPE : ushort
     {
         VT_EMPTY = 0,
         VT_NULL = 1,
@@ -54,8 +54,8 @@ namespace WIC
         VT_VECTOR = 0x1000,
         VT_ARRAY = 0x2000,
         VT_BYREF = 0x4000,
-        VT_RESERVED = unchecked((short)0x8000U),
+        VT_RESERVED = 0x8000,
 
-        VT_ILLEGAL = unchecked((short)0xffffU),
+        VT_ILLEGAL = 0xffff,
     }
 }

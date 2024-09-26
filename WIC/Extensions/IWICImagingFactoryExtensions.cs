@@ -56,7 +56,7 @@ namespace WIC
 
         public static IWICBitmapDecoder CreateDecoderFromStream(this IWICImagingFactory imagingFactory, Stream stream, WICDecodeOptions metadataOptions, Guid? pguidVendor = null)
         {
-            return imagingFactory.CreateDecoderFromStream(stream.AsCOMStream(), metadataOptions, pguidVendor);            
+            return imagingFactory.CreateDecoderFromStream(stream.AsCOMStream(), metadataOptions, pguidVendor);
         }
 
         public static IWICBitmapEncoder CreateEncoder(this IWICImagingFactory factory, Guid guidContainerFormat, Guid? pguidVendor = null)

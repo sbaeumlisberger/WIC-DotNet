@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataReader)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICMetadataReader
+    public partial interface IWICMetadataReader
     {
         Guid GetMetadataFormat();
 
@@ -15,15 +16,15 @@ namespace WIC
         int GetCount();
 
         void GetValueByIndex(
-            [In] int nIndex,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarSchema,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarId,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
+            int nIndex,
+            ref PROPVARIANT pvarSchema,
+            ref PROPVARIANT pvarId,
+            ref PROPVARIANT pvarValue);
 
         void GetValue(
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarSchema,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarId,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
+            PROPVARIANT pvarSchema,
+            PROPVARIANT pvarId,
+            ref PROPVARIANT pvarValue);
 
         IWICEnumMetadataItem GetEnumerator();
     }

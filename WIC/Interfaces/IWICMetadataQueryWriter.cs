@@ -1,33 +1,17 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
     /// <summary>
     /// Exposes methods for setting or removing metadata blocks and items to an encoder or its image frames using a metadata query expression.
     /// </summary>
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataQueryWriter)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICMetadataQueryWriter : IWICMetadataQueryReader
+    public partial interface IWICMetadataQueryWriter : IWICMetadataQueryReader
     {
-        #region Members inherited from `IWICMetadataQueryReader`
-
-        new Guid GetContainerFormat();
-
-        new void GetLocation(
-            [In] int cchMaxLength,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[] wzNamespace,
-            [Out] out int pcchActualLength);
-
-        new void GetMetadataByName(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string wzName,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
-
-        new IEnumString GetEnumerator();
-
-        #endregion
-
         /// <summary>
         /// Sets a metadata item to a specific location.
         /// </summary>       
@@ -40,9 +24,7 @@ namespace WIC
         /// <br/>
         /// The ordering of metadata items is at the discretion of the query writer since relative locations are not specified.
         /// </remarks>
-        void SetMetadataByName(
-           [In, MarshalAs(UnmanagedType.LPWStr)] string wzName,
-           [In, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
+        void SetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, ref PROPVARIANT pvarValue);
 
         /// <summary>
         /// Removes a metadata item from a specific location using a metadata query expression.
@@ -53,7 +35,6 @@ namespace WIC
         /// <br/>
         /// If the metadata item is a metadata block, it is removed from the metadata hierarchy.
         /// </remarks>
-        void RemoveMetadataByName(
-           [In, MarshalAs(UnmanagedType.LPWStr)] string wzName);
+        void RemoveMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName);
     }
 }

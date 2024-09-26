@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICBitmapSource)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICBitmapSource
+    public partial interface IWICBitmapSource
     {
         void GetSize(
-            [Out] out int puiWidth,
-            [Out] out int puiHeight);
+            out int puiWidth,
+            out int puiHeight);
 
         Guid GetPixelFormat();
 
         void GetResolution(
-            [Out] out double pDpiX,
-            [Out] out double pDpiY);
+            out double pDpiX,
+            out double pDpiY);
 
         void CopyPalette(
-            [In] IWICPalette pIPalette);
+            IWICPalette pIPalette);
 
         void CopyPixels(
-            [In] IntPtr prc, // WICRect*
-            [In] int cbStride,
-            [In] int cbBufferSize,
+            IntPtr prc, // WICRect*
+            int cbStride,
+            int cbBufferSize,
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] pbBuffer);
     }
 }

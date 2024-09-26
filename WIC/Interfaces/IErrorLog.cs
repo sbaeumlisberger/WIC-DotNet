@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IErrorLog)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IErrorLog
+    public partial interface IErrorLog
     {
         void AddError(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName,
-            [In] IntPtr pExcepInfo); // EXCEPINFO*
+            [MarshalAs(UnmanagedType.LPWStr)] string pszPropName,
+            IntPtr pExcepInfo); // EXCEPINFO*
     }
 }

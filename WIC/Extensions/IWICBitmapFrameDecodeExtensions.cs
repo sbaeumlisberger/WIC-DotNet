@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace WIC
 {
@@ -13,11 +12,11 @@ namespace WIC
 
         public static IWICColorContext[] GetColorContexts(this IWICBitmapFrameDecode bitmapFrameDecode)
         {
-            var wic = new WICImagingFactory();
+            var wic = WICImagingFactory.Create();
 
             bitmapFrameDecode.GetColorContexts(0, null, out int length);
-            
-            var colorContexts = new IWICColorContext[length];         
+
+            var colorContexts = new IWICColorContext[length];
 
             if (length > 0)
             {

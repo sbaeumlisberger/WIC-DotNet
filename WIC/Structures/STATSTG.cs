@@ -1,15 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace WIC
 {
     [StructLayout(LayoutKind.Sequential)]
-    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public struct STATSTG
     {
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string pwcsName;
+        public IntPtr pwcsName;
         public STGTY type;
         public long cbSize;
         public long mtime;

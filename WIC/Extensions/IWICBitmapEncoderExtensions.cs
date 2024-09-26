@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 
 namespace WIC
@@ -13,15 +14,13 @@ namespace WIC
 
         public static IWICBitmapFrameEncode CreateNewFrame(this IWICBitmapEncoder bitmapEncoder, out IPropertyBag2 encoderOptions)
         {
-            IPropertyBag2? encoderOptionsNullable = null;
-            bitmapEncoder.CreateNewFrame(out IWICBitmapFrameEncode frameEncode, ref encoderOptionsNullable);
-            encoderOptions = encoderOptionsNullable!;
+            bitmapEncoder.CreateNewFrame(out IWICBitmapFrameEncode frameEncode, out encoderOptions);
             return frameEncode;
         }
 
         public static IWICBitmapFrameEncode CreateNewFrame(this IWICBitmapEncoder bitmapEncoder)
         {
-            bitmapEncoder.CreateNewFrame(out IWICBitmapFrameEncode ppIFrameEncode, null);
+            bitmapEncoder.CreateNewFrame(out IWICBitmapFrameEncode ppIFrameEncode, out _);
             return ppIFrameEncode;
         }
 

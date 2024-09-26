@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 
 namespace WIC
-{  
+{
     [Flags]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public enum STGM : int
@@ -19,9 +19,9 @@ namespace WIC
         STGM_CONVERT = 0x00020000,
         STGM_FAILIFTHERE = 0x00000000,
         STGM_DIRECT = 0x00000000,
-        STGM_TRANSACTED	= 0x00010000,
+        STGM_TRANSACTED = 0x00010000,
         STGM_NOSCRATCH = 0x00100000,
-        STGM_NOSNAPSHOT	= 0x00200000,
+        STGM_NOSNAPSHOT = 0x00200000,
         STGM_SIMPLE = 0x08000000,
         STGM_DIRECT_SWMR = 0x00400000,
         STGM_DELETEONRELEASE = 0x04000000,

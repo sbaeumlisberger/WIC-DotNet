@@ -1,21 +1,22 @@
 ﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICEnumMetadataItem)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICEnumMetadataItem
+    public partial interface IWICEnumMetadataItem
     {
         void Next(
-           [In] int celt,
+           int celt,
            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgeltSchema,
            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgeltId,
            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgeltValue,
-           [Out] out int pceltFetched);
+           out int pceltFetched);
 
         void Skip(
-            [In] int celt);
+            int celt);
 
         void Reset();
 

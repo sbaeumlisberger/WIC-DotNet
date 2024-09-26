@@ -14,5 +14,6 @@
         public const int COMPONENT_NOT_FOUND = unchecked((int)0x88982F50);
         public const int CODEC_NO_THUMBNAIL = unchecked((int)0x88982F44);
         public const int PALETTE_UNAVAILABLE = unchecked((int)0x88982F45);
+        public const int INVALID_PROGRESSIVE_LEVEL = unchecked((int)0x88982F95);        
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.IO;
 using WIC;
 
 namespace EncoderOptions
@@ -13,7 +11,7 @@ namespace EncoderOptions
             const int height = 256;
             const int bytesPerPixel = 3;
 
-            var wic = new WICImagingFactory();
+            var wic = WICImagingFactory.Create();
 
             var encoder = wic.CreateEncoder(ContainerFormat.Jpeg);
 

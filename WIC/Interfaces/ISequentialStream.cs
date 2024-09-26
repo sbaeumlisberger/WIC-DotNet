@@ -1,22 +1,22 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.ISequentialStream)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface ISequentialStream
+    public partial interface ISequentialStream
     {
         void Read(
             [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] pv,
-            [In] int cb,
-            [Out] IntPtr pcbRead);
+            int cb,
+            IntPtr pcbRead);
 
         void Write(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] pv,
-            [In] int cb,
-            [Out] IntPtr pcbWritten);
+            int cb,
+            IntPtr pcbWritten);
     }
 }

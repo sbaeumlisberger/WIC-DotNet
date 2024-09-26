@@ -1,42 +1,46 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICPalette)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICPalette
+    public partial interface IWICPalette
     {
         void InitializePredefined(
-            [In] WICBitmapPaletteType ePaletteType,
-            [In] bool fAddTransparentColor);
+            WICBitmapPaletteType ePaletteType,
+            [MarshalAs(UnmanagedType.Bool)] bool fAddTransparentColor);
 
         void InitializeCustom(
-            [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeParamIndex = 1)] int[] pColors,
-            [In] int cCount);
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] int[] pColors,
+            int cCount);
 
         void InitializeFromBitmap(
-            [In] IWICBitmapSource pISurface,
-            [In] int cCount,
-            [In] bool fAddTransparentColor);
+            IWICBitmapSource pISurface,
+            int cCount,
+            [MarshalAs(UnmanagedType.Bool)] bool fAddTransparentColor);
 
         void InitializeFromPalette(
-            [In] IWICPalette pIPalette);
+            IWICPalette pIPalette);
 
         WICBitmapPaletteType GetType();
 
         int GetColorCount();
 
         void GetColors(
-            [In] int cCount,
-            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeParamIndex = 0)] int[]? pColors,
-            [Out] out int pcActualColors);
+            int cCount,
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[]? pColors,
+            out int pcActualColors);
 
+        [return: MarshalAs(UnmanagedType.Bool)]
         bool IsBlackWhite();
 
+        [return: MarshalAs(UnmanagedType.Bool)]
         bool IsGrayscale();
 
+        [return: MarshalAs(UnmanagedType.Bool)]
         bool HasAlpha();
     }
 }

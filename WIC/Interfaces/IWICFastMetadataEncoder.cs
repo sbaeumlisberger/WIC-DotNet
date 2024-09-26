@@ -1,11 +1,12 @@
 ﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICFastMetadataEncoder)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICFastMetadataEncoder
+    public partial interface IWICFastMetadataEncoder
     {
         void Commit();
 

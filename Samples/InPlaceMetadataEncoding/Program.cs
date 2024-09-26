@@ -13,7 +13,7 @@ namespace InPlaceMetadataEncoding
             {               
                 string filePath = args[0];
 
-                var wic = new WICImagingFactory();
+                var wic = WICImagingFactory.Create();
 
                 using var fileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
 

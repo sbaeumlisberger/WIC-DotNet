@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
     /// <summary>
     /// Exposes methods for retrieving metadata blocks and items from a decoder or its image frames using a metadata query expression.
     /// </summary>
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataQueryReader)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICMetadataQueryReader
+    public partial interface IWICMetadataQueryReader
     {
         /// <summary>
         /// Gets the metadata query readers container format.
@@ -31,9 +32,9 @@ namespace WIC
         /// If the query reader is relative to a nested metadata block, this method will return the path to the current query reader.
         /// </remarks>
         void GetLocation(
-            [In] int cchMaxLength,
+            int cchMaxLength,
             [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzNamespace,
-            [Out] out int pcchActualLength);
+            out int pcchActualLength);
 
         /// <summary>
         /// Retrieves the metadata block or item identified by a metadata query expression.
@@ -45,7 +46,7 @@ namespace WIC
         /// <br/>
         /// If multiple blocks or items exist that are expressed by the same query expression, the first metadata block or item found will be returned.
         /// </remarks>
-        void GetMetadataByName([In, MarshalAs(UnmanagedType.LPWStr)] string wzName, [In, Out] ref PROPVARIANT pvarValue);
+        void GetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, ref PROPVARIANT pvarValue);
 
         /// <summary>
         /// Gets an enumerator of all metadata items at the current relative location within the metadata hierarchy.
@@ -57,20 +58,20 @@ namespace WIC
         IEnumString GetEnumerator();
     }
 
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataQueryReader)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IWICMetadataQueryReaderHRESULT
+    internal partial interface IWICMetadataQueryReaderHRESULT
     {
         Guid GetContainerFormat();
 
         void GetLocation(
-            [In] int cchMaxLength,
+            int cchMaxLength,
             [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U2, SizeParamIndex = 0)] char[]? wzNamespace,
-            [Out] out int pcchActualLength);
+            out int pcchActualLength);
 
         [PreserveSig]
-        int GetMetadataByName([In, MarshalAs(UnmanagedType.LPWStr)] string wzName, [In, Out] ref PROPVARIANT pvarValue);
+        int GetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, ref PROPVARIANT pvarValue);
 
         IEnumString GetEnumerator();
     }

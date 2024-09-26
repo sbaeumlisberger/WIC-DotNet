@@ -1,40 +1,30 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataBlockWriter)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICMetadataBlockWriter : IWICMetadataBlockReader
+    public partial interface IWICMetadataBlockWriter : IWICMetadataBlockReader
     {
-        #region Members inherited from `IWICMetadataBlockReader`
 
-        new Guid GetContainerFormat();
-
-        new int GetCount();
-
-        new IWICMetadataReader GetReaderByIndex(
-            [In] int nIndex);
-
-        new IEnumUnknown GetEnumerator();
-
-        #endregion
 
         void InitializeFromBlockReader(
-            [In] IWICMetadataBlockReader pIMDBlockReader);
+            IWICMetadataBlockReader pIMDBlockReader);
 
         IWICMetadataWriter GetWriterByIndex(
-            [In] int nIndex);
+            int nIndex);
 
         void AddWriter(
-            [In] IWICMetadataWriter pIMetadataWriter);
+            IWICMetadataWriter pIMetadataWriter);
 
         void SetWriterByIndex(
-            [In] int nIndex,
-            [In] IWICMetadataWriter pIMetadataWriter);
+            int nIndex,
+            IWICMetadataWriter pIMetadataWriter);
 
         void RemoveWriterByIndex(
-            [In] int nIndex);
+            int nIndex);
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace WIC
 {
-    internal static class PropVariantHelper
+    internal static partial class PropVariantHelper
     {
         private const VARTYPE VectorFlags = VARTYPE.VT_ARRAY | VARTYPE.VT_VECTOR | VARTYPE.VT_BYREF;
 
@@ -59,7 +56,7 @@ namespace WIC
             [typeof(double)] = VARTYPE.VT_R8
         };
 
-        public static object Decode(PROPVARIANT variant)
+        public static object? Decode(PROPVARIANT variant)
         {
             if (variant.Type == VARTYPE.VT_BLOB)
             {
@@ -75,8 +72,13 @@ namespace WIC
             }
         }
 
-        public static PROPVARIANT Encode(object value)
+        public static PROPVARIANT Encode(object? value)
         {
+            if (value is null)
+            {
+                return new PROPVARIANT() { Type = VARTYPE.VT_EMPTY };
+            }
+
             var type = value.GetType();
 
             if (value is WICBlob blob)
@@ -110,68 +112,70 @@ namespace WIC
 
         private static Array DecodeVector(PROPVARIANT variant)
         {
-            Type elementType;
             int elementSize;
-            Func<IntPtr, object> elementDecoder;
+            Func<IntPtr, object?> elementDecoder;
+
+            int length = variant.Vector.Length;
+            Array array;
 
             switch (variant.Type & ~VectorFlags)
             {
                 case VARTYPE.VT_I1:
-                    elementType = typeof(sbyte);
+                    array = new sbyte[length];
                     elementDecoder = ptr => (sbyte)Marshal.ReadByte(ptr);
                     elementSize = 1;
                     break;
 
                 case VARTYPE.VT_I2:
-                    elementType = typeof(short);
+                    array = new short[length];
                     elementDecoder = ptr => Marshal.ReadInt16(ptr);
                     elementSize = 2;
                     break;
 
                 case VARTYPE.VT_I4:
-                    elementType = typeof(int);
+                    array = new int[length];
                     elementDecoder = ptr => Marshal.ReadInt32(ptr);
                     elementSize = 4;
                     break;
 
                 case VARTYPE.VT_I8:
-                    elementType = typeof(long);
+                    array = new long[length];
                     elementDecoder = ptr => Marshal.ReadInt64(ptr);
                     elementSize = 8;
                     break;
 
                 case VARTYPE.VT_UI1:
-                    elementType = typeof(byte);
+                    array = new byte[length];
                     elementDecoder = ptr => Marshal.ReadByte(ptr);
                     elementSize = 1;
                     break;
 
                 case VARTYPE.VT_UI2:
-                    elementType = typeof(ushort);
+                    array = new ushort[length];
                     elementDecoder = ptr => (ushort)Marshal.ReadInt16(ptr);
                     elementSize = 2;
                     break;
 
                 case VARTYPE.VT_UI4:
-                    elementType = typeof(uint);
+                    array = new uint[length];
                     elementDecoder = ptr => (uint)Marshal.ReadInt32(ptr);
                     elementSize = 4;
                     break;
 
                 case VARTYPE.VT_UI8:
-                    elementType = typeof(ulong);
+                    array = new ulong[length];
                     elementDecoder = ptr => (ulong)Marshal.ReadInt64(ptr);
                     elementSize = 8;
                     break;
 
                 case VARTYPE.VT_LPSTR:
-                    elementType = typeof(string);
+                    array = new string[length];
                     elementDecoder = ptr => Marshal.PtrToStringAnsi(Marshal.ReadIntPtr(ptr))!;
                     elementSize = IntPtr.Size;
                     break;
 
                 case VARTYPE.VT_LPWSTR:
-                    elementType = typeof(string);
+                    array = new string[length];
                     elementDecoder = ptr => Marshal.PtrToStringUni(Marshal.ReadIntPtr(ptr))!;
                     elementSize = IntPtr.Size;
                     break;
@@ -179,8 +183,8 @@ namespace WIC
                 case VARTYPE.VT_UNKNOWN:
                 case VARTYPE.VT_STREAM:
                 case VARTYPE.VT_STORAGE:
-                    elementType = typeof(object);
-                    elementDecoder = ptr => Marshal.GetObjectForIUnknown(Marshal.ReadIntPtr(ptr));
+                    array = new object[length];
+                    elementDecoder = ptr => GetObjectForIUnknown(Marshal.ReadIntPtr(ptr));
                     elementSize = IntPtr.Size;
                     break;
 
@@ -188,19 +192,17 @@ namespace WIC
                     throw new NotImplementedException();
             }
 
-            int length = variant.Vector.Length;
-            var vector = Array.CreateInstance(elementType, length);
             IntPtr elementPtr = variant.Vector.Ptr;
             for (int i = 0; i < length; ++i)
             {
-                vector.SetValue(elementDecoder.Invoke(elementPtr), i);
+                array.SetValue(elementDecoder.Invoke(elementPtr), i);
                 elementPtr += elementSize;
             }
 
-            return vector;
+            return array;
         }
 
-        private static object DecodeValue(PROPVARIANT variant)
+        private static object? DecodeValue(PROPVARIANT variant)
         {
             return variant.Type switch
             {
@@ -219,11 +221,20 @@ namespace WIC
                 VARTYPE.VT_R4 => variant.R4,
                 VARTYPE.VT_R8 => variant.R8,
                 VARTYPE.VT_FILETIME => DateTime.FromFileTime(variant.I8),
-                VARTYPE.VT_UNKNOWN => Marshal.GetObjectForIUnknown(variant.Ptr),
-                VARTYPE.VT_STREAM => Marshal.GetObjectForIUnknown(variant.Ptr),
-                VARTYPE.VT_STORAGE => Marshal.GetObjectForIUnknown(variant.Ptr),
+                VARTYPE.VT_UNKNOWN => GetObjectForIUnknown(variant.Ptr),
+                VARTYPE.VT_STREAM => GetObjectForIUnknown(variant.Ptr),
+                VARTYPE.VT_STORAGE => GetObjectForIUnknown(variant.Ptr),
                 _ => throw new NotSupportedException($"Can not decode value of type {variant.Type}.")
             };
+        }
+
+        private static object? GetObjectForIUnknown(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+            return WICComWrappers.Instance.GetOrCreateObjectForComInstance(ptr, CreateObjectFlags.Unwrap);
         }
 
         private static PROPVARIANT EncodeBlob(WICBlob blob)
@@ -291,7 +302,7 @@ namespace WIC
             };
         }
 
-        [DllImport("Ole32.dll", CharSet = CharSet.Unicode)]
-        private static extern int PropVariantClear(ref PROPVARIANT pvar);
+        [LibraryImport("Ole32.dll", StringMarshalling = StringMarshalling.Utf16)]
+        private static partial int PropVariantClear(ref PROPVARIANT pvar);
     }
 }

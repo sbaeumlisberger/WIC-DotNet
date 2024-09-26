@@ -1,46 +1,47 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICBitmapFrameEncode)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICBitmapFrameEncode
+    public partial interface IWICBitmapFrameEncode
     {
         void Initialize(
-            [In] IPropertyBag2? pIEncoderOptions = null);
+            IPropertyBag2? pIEncoderOptions = null);
 
         void SetSize(
-            [In] int uiWidth,
-            [In] int uiHeight);
+            int uiWidth,
+            int uiHeight);
 
         void SetResolution(
-            [In] double dpiX,
-            [In] double dpiY);
+            double dpiX,
+            double dpiY);
 
         void SetPixelFormat(
-            [In, Out] ref Guid pPixelFormat);
+            Guid pPixelFormat);
 
         void SetColorContexts(
-            [In] int cCount,
+            int cCount,
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[] ppIColorContext);
 
         void SetPalette(
-            [In] IWICPalette pIPalette);
+            IWICPalette pIPalette);
 
         void SetThumbnail(
-            [In] IWICBitmapSource pIThumbnail);
+            IWICBitmapSource pIThumbnail);
 
         void WritePixels(
-            [In] int lineCount,
-            [In] int cbStride,
-            [In] int cbBufferSize,
+            int lineCount,
+            int cbStride,
+            int cbBufferSize,
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] pbPixels);
 
         void WriteSource(
-            [In] IWICBitmapSource pIBitmapSource,
-            [In] IntPtr prc);
+            IWICBitmapSource pIBitmapSource,
+            IntPtr prc);
 
         void Commit();
 

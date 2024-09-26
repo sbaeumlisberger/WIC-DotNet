@@ -1,41 +1,42 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICBitmapDecoder)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICBitmapDecoder
+    public partial interface IWICBitmapDecoder
     {
         WICBitmapDecoderCapabilities QueryCapability(
-            [In] IStream pIStream);
+            IStream pIStream);
 
         void Initialize(
-            [In] IStream pIStream,
-            [In] WICDecodeOptions cacheOptions);
+            IStream pIStream,
+            WICDecodeOptions cacheOptions);
 
         Guid GetContainerFormat();
 
         IWICBitmapDecoderInfo GetDecoderInfo();
 
         void CopyPalette(
-            [In] IWICPalette pIPalette);
+            IWICPalette pIPalette);
 
         IWICMetadataQueryReader GetMetadataQueryReader();
 
         IWICBitmapSource GetPreview();
 
         void GetColorContexts(
-            [In] int cCount,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[]? ppIColorContexts,
-            [Out] out int pcActualCount);
+            int cCount,
+            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[]? ppIColorContexts,
+            out int pcActualCount);
 
         IWICBitmapSource GetThumbnail();
 
         int GetFrameCount();
 
         IWICBitmapFrameDecode GetFrame(
-            [In] int index);
+            int index);
     }
 }

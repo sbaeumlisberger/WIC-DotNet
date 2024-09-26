@@ -9,7 +9,7 @@ namespace WIC
         public static IEnumerable<string> AsEnumerable(this IEnumString enumString)
         {
             var buffer = new string[1];
-            for (;;)
+            for (; ; )
             {
                 int length;
                 enumString.Next(1, buffer, out length);

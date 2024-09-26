@@ -9,7 +9,7 @@ namespace WIC.Test
         [Fact]
         public void GetMetadataByName()
         {
-            ReadMetadata("TestImage.jpg", metadataReader =>
+            GetMetadataQueryReader("TestImage.jpg", metadataReader =>
             {
                 var value = metadataReader.GetMetadataByName("System.Keywords");
                 Assert.IsType<string[]>(value);
@@ -17,9 +17,21 @@ namespace WIC.Test
         }
 
         [Fact]
+        public void SetMetadataByName()
+        {
+            GetMetadataQueryWriter("TestImage.jpg", metadataWriter =>
+            {
+                string[] keywords = ["test keyword"];
+                metadataWriter.SetMetadataByName("System.Keywords", keywords);
+                Assert.Equal(keywords, metadataWriter.GetMetadataByName("System.Keywords"));
+            });
+        }
+
+
+        [Fact]
         public void GetMetadataByName_Throws_WhenPropertyFound()
         {
-            ReadMetadata("TestImageWithoutMetadata.jpg", metadataReader =>
+            GetMetadataQueryReader("TestImageWithoutMetadata.jpg", metadataReader =>
             {
                 Assert.Throws<COMException>(() => metadataReader.GetMetadataByName("System.Keywords"));
             });
@@ -28,7 +40,7 @@ namespace WIC.Test
         [Fact]
         public void TryGetMetadataByName_ReturnTrue_WhenPropertyFound()
         {
-            ReadMetadata("TestImage.jpg", metadataReader =>
+            GetMetadataQueryReader("TestImage.jpg", metadataReader =>
             {
                 Assert.True(metadataReader.TryGetMetadataByName("System.Keywords", out var value));
                 Assert.IsType<string[]>(value);
@@ -38,7 +50,7 @@ namespace WIC.Test
         [Fact]
         public void TryGetMetadataByName_ReturnsFalse_WhenPropertyNotFound()
         {
-            ReadMetadata("TestImageWithoutMetadata.jpg", metadataReader =>
+            GetMetadataQueryReader("TestImageWithoutMetadata.jpg", metadataReader =>
             {
                 Assert.False(metadataReader.TryGetMetadataByName("System.Keywords", out var value));
                 Assert.Null(value);
@@ -48,20 +60,30 @@ namespace WIC.Test
         [Fact]
         public void TryGetMetadataByName_Throws_WhenPropertyNotSupported()
         {
-            ReadMetadata("TestImageWithoutMetadata.jpg", metadataReader =>
+            GetMetadataQueryReader("TestImageWithoutMetadata.jpg", metadataReader =>
             {
                 Assert.Throws<COMException>(() => metadataReader.TryGetMetadataByName("Property.Not.Supported", out var value));
             });
         }
 
-        private void ReadMetadata(string fileName, Action<IWICMetadataQueryReader> readMetadata)
+        private void GetMetadataQueryReader(string fileName, Action<IWICMetadataQueryReader> readMetadata)
         {
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
             using var stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
-            var wic = new WICImagingFactory();
+            var wic = WICImagingFactory.Create();
             var decoder = wic.CreateDecoderFromStream(stream, WICDecodeOptions.WICDecodeMetadataCacheOnDemand);
             var metadataReader = decoder.GetFrame(0).GetMetadataQueryReader();
             readMetadata(metadataReader);
+        }
+
+        private void GetMetadataQueryWriter(string fileName, Action<IWICMetadataQueryWriter> writeMetadata)
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+            using var stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
+            var wic = WICImagingFactory.Create();
+            var decoder = wic.CreateDecoderFromStream(stream, WICDecodeOptions.WICDecodeMetadataCacheOnDemand);
+            var encoder = wic.CreateFastMetadataEncoderFromFrameDecode(decoder.GetFrame(0));
+            writeMetadata(encoder.GetMetadataQueryWriter());
         }
     }
 }

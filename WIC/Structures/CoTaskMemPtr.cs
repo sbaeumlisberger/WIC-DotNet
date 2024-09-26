@@ -10,7 +10,7 @@ namespace WIC
             IntPtr value;
             if (nullableStructure.HasValue)
             {
-                value = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(T)));
+                value = Marshal.AllocCoTaskMem(Marshal.SizeOf<T>());
                 Marshal.StructureToPtr(nullableStructure.Value, value, false);
             }
             else

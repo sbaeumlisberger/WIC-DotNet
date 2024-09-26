@@ -1,37 +1,38 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICBitmapEncoder)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICBitmapEncoder
+    public partial interface IWICBitmapEncoder
     {
         void Initialize(
-            [In] IStream pIStream,
-            [In] WICBitmapEncoderCacheOption cacheOption);
+            IStream pIStream,
+            WICBitmapEncoderCacheOption cacheOption);
 
         Guid GetContainerFormat();
 
         IWICBitmapEncoderInfo GetEncoderInfo();
 
         void SetColorContexts(
-            [In] int cCount,
+            int cCount,
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[] ppIColorContext);
 
         void SetPalette(
-            [In] IWICPalette pIPalette);
+            IWICPalette pIPalette);
 
         void SetThumbnail(
-            [In] IWICBitmapSource pIThumbnail);
+            IWICBitmapSource pIThumbnail);
 
         void SetPreview(
-            [In] IWICBitmapSource pIPreview);
+            IWICBitmapSource pIPreview);
 
         void CreateNewFrame(
-            [Out] out IWICBitmapFrameEncode ppIFrameEncode,
-            [In, Out] ref IPropertyBag2? ppIEncoderOptions);
+            out IWICBitmapFrameEncode ppIFrameEncode,
+            out IPropertyBag2 ppIEncoderOptions);
 
         void Commit();
 

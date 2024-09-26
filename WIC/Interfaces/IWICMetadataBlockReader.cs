@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataBlockReader)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICMetadataBlockReader
+    public partial interface IWICMetadataBlockReader
     {
         Guid GetContainerFormat();
 
         int GetCount();
 
-        IWICMetadataReader GetReaderByIndex(
-            [In] int nIndex);
+        IWICMetadataReader GetReaderByIndex(int nIndex);
 
         IEnumUnknown GetEnumerator();
     }

@@ -1,52 +1,32 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICMetadataWriter)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICMetadataWriter : IWICMetadataReader
+    public partial interface IWICMetadataWriter : IWICMetadataReader
     {
-        #region Members inherited from `IWICMetadataReader`
 
-        new Guid GetMetadataFormat();
-
-        new IWICMetadataHandlerInfo GetMetadataHandlerInfo();
-
-        new int GetCount();
-
-        new void GetValueByIndex(
-            [In] int nIndex,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarSchema,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarId,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
-
-        new void GetValue(
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarSchema,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarId,
-            [In, Out, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pvarValue);
-
-        new IWICEnumMetadataItem GetEnumerator();
-
-        #endregion
 
         void SetValue(
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarSchema,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarId,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarValue);
+            PROPVARIANT pvarSchema,
+            PROPVARIANT pvarId,
+            PROPVARIANT pvarValue);
 
         void SetValueByIndex(
-            [In] int nIndex,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarSchema,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarId,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarValue);
+            int nIndex,
+            PROPVARIANT pvarSchema,
+            PROPVARIANT pvarId,
+            PROPVARIANT pvarValue);
 
         void RemoveValue(
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarSchema,
-            [In, MarshalAs(UnmanagedType.Struct)] PROPVARIANT pvarId);
+            PROPVARIANT pvarSchema,
+            PROPVARIANT pvarId);
 
         void RemoveValueByIndex(
-            [In] int nIndex);
+            int nIndex);
     }
 }

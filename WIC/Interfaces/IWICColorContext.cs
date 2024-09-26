@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICColorContext)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICColorContext
+    public partial interface IWICColorContext
     {
         void InitializeFromFilename(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string wzFilename);
+            [MarshalAs(UnmanagedType.LPWStr)] string wzFilename);
 
         void InitializeFromMemory(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] pbBuffer,
-            [In] int cbBufferSize);
+            int cbBufferSize);
 
         void InitializeFromExifColorSpace(
-            [In] ExifColorSpace value);
+            ExifColorSpace value);
 
         WICColorContextType GetType();
 
         void GetProfileBytes(
-            [In] int cbBuffer,
+            int cbBuffer,
             [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 0)] byte[]? pbBuffer,
-            [Out] out int pcbActual);
+            out int pcbActual);
 
         ExifColorSpace GetExifColorSpace();
     }

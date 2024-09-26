@@ -44,5 +44,6 @@
         public const string IWICStream = "135ff860-22b7-4ddf-b0f6-218f4f299a43";
         public const string IWICPixelFormatInfo = "e8eda601-3d48-431a-ab44-69059be88bbe";
         public const string IWICPixelFormatInfo2 = "a9db33a2-af5f-43c7-b679-74f5984b5aa4";
+        public const string IWICProgressiveLevelControl = "daac296f-7aa5-4dbf-8d15-225c5976f891";
     }
 }

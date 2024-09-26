@@ -1,60 +1,45 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IStream)]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IStream : ISequentialStream
+    public partial interface IStream : ISequentialStream
     {
-        #region Members inherited from `ISequentialStream`
-
-        new void Read(
-            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] pv,
-            [In] int cb,
-            [Out] IntPtr pcbRead);
-
-        new void Write(
-            [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] pv,
-            [In] int cb,
-            [Out] IntPtr pcbWritten);
-
-        #endregion
-
         void Seek(
-            [In] long dlibMove,
-            [In] STREAM_SEEK dwOrigin,
-            [Out] IntPtr plibNewPosition);
+            long dlibMove,
+            STREAM_SEEK dwOrigin,
+            IntPtr plibNewPosition);
 
         void SetSize(
-            [In] long libNewSize);
+            long libNewSize);
 
         void CopyTo(
-            [In] IStream pstm,
-            [In] long cb,
-            [Out] out long pcbRead,
-            [Out] out long pcbWritten);
+            IStream pstm,
+            long cb,
+            out long pcbRead,
+            out long pcbWritten);
 
         void Commit(
-            [In] STGC grfCommitFlags);
+            STGC grfCommitFlags);
 
         void Revert();
 
         void LockRegion(
-            [In] long libOffset,
-            [In] long cb,
-            [In] LOCKTYPE dwLockType);
+            long libOffset,
+            long cb,
+            LOCKTYPE dwLockType);
 
         void UnlockRegion(
-            [In] long libOffset,
-            [In] long cb,
-            [In] LOCKTYPE dwLockType);
+            long libOffset,
+            long cb,
+            LOCKTYPE dwLockType);
 
         void Stat(
-            [In, Out] ref STATSTG pstatstg,
-            [In] STATFLAG grfStatFlag);
+            ref STATSTG pstatstg,
+            STATFLAG grfStatFlag);
 
         IStream Clone();
     }

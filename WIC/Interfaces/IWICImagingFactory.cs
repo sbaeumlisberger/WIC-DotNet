@@ -1,39 +1,39 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IWICImagingFactory)]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWICImagingFactory
+    public partial interface IWICImagingFactory
     {
         IWICBitmapDecoder CreateDecoderFromFilename(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string wzFilename,
-            [In] IntPtr pguidVendor,
-            [In] StreamAccessMode dwDesiredAccess,
-            [In] WICDecodeOptions metadataOptions);
+            [MarshalAs(UnmanagedType.LPWStr)] string wzFilename,
+            IntPtr pguidVendor,
+            StreamAccessMode dwDesiredAccess,
+            WICDecodeOptions metadataOptions);
 
         IWICBitmapDecoder CreateDecoderFromStream(
-            [In] IStream pIStream,
-            [In] IntPtr pguidVendor,
-            [In] WICDecodeOptions metadataOptions);
+            IStream pIStream,
+            IntPtr pguidVendor,
+            WICDecodeOptions metadataOptions);
 
         IWICBitmapDecoder CreateDecoderFromFileHandle(
-            [In] IntPtr hFile,
-            [In] IntPtr pguidVendor,
-            [In] WICDecodeOptions metadataOptions);
+            IntPtr hFile,
+            IntPtr pguidVendor,
+            WICDecodeOptions metadataOptions);
 
         IWICComponentInfo CreateComponentInfo(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsidComponent);
+            Guid clsidComponent);
 
         IWICBitmapDecoder CreateDecoder(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidContainerFormat,
-            [In] IntPtr pguidVendor);
+            Guid guidContainerFormat,
+            IntPtr pguidVendor);
 
         IWICBitmapEncoder CreateEncoder(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidContainerFormat,
-            [In] IntPtr pguidVendor);
+            Guid guidContainerFormat,
+            IntPtr pguidVendor);
 
         IWICPalette CreatePalette();
 
@@ -52,54 +52,54 @@ namespace WIC
         IWICColorTransform CreateColorTransformer();
 
         IWICBitmap CreateBitmap(
-            [In] int uiWidth,
-            [In] int uiHeight,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid pixelFormat,
-            [In] WICBitmapCreateCacheOption option);
+            int uiWidth,
+            int uiHeight,
+            Guid pixelFormat,
+            WICBitmapCreateCacheOption option);
 
         IWICBitmap CreateBitmapFromSource(
-            [In] IWICBitmapSource pIBitmapSource,
-            [In] WICBitmapCreateCacheOption option);
+            IWICBitmapSource pIBitmapSource,
+            WICBitmapCreateCacheOption option);
 
         IWICBitmap CreateBitmapFromSourceRect(
-            [In] IWICBitmapSource pIBitmapSource,
-            [In] int x,
-            [In] int y,
-            [In] int width,
-            [In] int height);
+            IWICBitmapSource pIBitmapSource,
+            int x,
+            int y,
+            int width,
+            int height);
 
         IWICBitmap CreateBitmapFromMemory(
-            [In] int uiWidth,
-            [In] int uiHeight,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid pixelFormat,
-            [In] int cbStride,
-            [In] int cbBufferSize,
-            [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 4)] byte[] pbBuffer);
+            int uiWidth,
+            int uiHeight,
+            Guid pixelFormat,
+            int cbStride,
+            int cbBufferSize,
+            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 4)] byte[] pbBuffer);
 
         IWICBitmap CreateBitmapFromHBITMAP(
-            [In] IntPtr hBitmap,
-            [In] IntPtr hPalette,
-            [In] WICBitmapAlphaChannelOption options);
+            IntPtr hBitmap,
+            IntPtr hPalette,
+            WICBitmapAlphaChannelOption options);
 
         IWICBitmap CreateBitmapFromHICON(
-            [In] IntPtr hIcon);
+            IntPtr hIcon);
 
         IEnumUnknown CreateComponentEnumerator(
-            [In] WICComponentType componentTypes,
-            [In] WICComponentEnumerateOptions options);
+            WICComponentType componentTypes,
+            WICComponentEnumerateOptions options);
 
         IWICFastMetadataEncoder CreateFastMetadataEncoderFromDecoder(
-            [In] IWICBitmapDecoder pIDecoder);
+            IWICBitmapDecoder pIDecoder);
 
         IWICFastMetadataEncoder CreateFastMetadataEncoderFromFrameDecode(
-            [In] IWICBitmapFrameDecode pIFrameDecoder);
+            IWICBitmapFrameDecode pIFrameDecoder);
 
         IWICMetadataQueryWriter CreateQueryWriter(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMetadataFormat,
-            [In] IntPtr pguidVendor);
+            Guid guidMetadataFormat,
+            IntPtr pguidVendor);
 
         IWICMetadataQueryWriter CreateQueryWriterFromReader(
-            [In] IWICMetadataQueryReader pIQueryReader,
-            [In] IntPtr pguidVendor);
+            IWICMetadataQueryReader pIQueryReader,
+            IntPtr pguidVendor);
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace WIC
 {
-    [ComImport]
+    [GeneratedComInterface]
     [Guid(IID.IEnumUnknown)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IEnumUnknown
+    public partial interface IEnumUnknown
     {
         void Next(
-            [In] int celt,
+            int celt,
             [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] object[] rgelt,
-            [Out] out int pceltFetched);
+            out int pceltFetched);
 
         void Skip(
-            [In] int celt);
+            int celt);
 
         void Reset();
 

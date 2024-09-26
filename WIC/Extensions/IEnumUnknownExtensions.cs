@@ -9,7 +9,7 @@ namespace WIC
         public static IEnumerable<object> AsEnumerable(this IEnumUnknown enumUnknown)
         {
             var buffer = new object[1];
-            for (;;)
+            for (; ; )
             {
                 int length;
                 enumUnknown.Next(1, buffer, out length);
