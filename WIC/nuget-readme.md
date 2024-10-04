@@ -26,9 +26,9 @@ Windows Imaging Component allows you to accomplish tasks such as:
 
  2. Add the NuGet package [`WIC.DotNet`][nuget-package] to your project.
 
- 3. In your code, start by instantiating a `WICImagingFactory` object.
-    For Version 1.x use: `new WICImagingFactory()`
-    For Version 2.x use: `WICImagingFactory.Create()`
+ 3. In your code, start by instantiating a `WICImagingFactory` object.  
+    For Version 1.x use: `new WICImagingFactory()`  
+    For Version 2.x use: `WICImagingFactory.Create()`  
     Most other WIC components can be created directly or indirectly through this factory object.
     
  [msdn]: https://msdn.microsoft.com/en-us/library/windows/desktop/ee719902.aspx
