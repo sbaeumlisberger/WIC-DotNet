@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncoderOptions", "Samples\E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WIC.Test", "WIC.Test\WIC.Test.csproj", "{CCF7B56F-62B0-4E3D-A41C-54AB0004B01E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeAOT", "NativeAOT\NativeAOT.csproj", "{12AEFAF3-AA47-407D-9981-B9E8E01A880A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NativeAOT", "Samples\NativeAOT\NativeAOT.csproj", "{12AEFAF3-AA47-407D-9981-B9E8E01A880A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

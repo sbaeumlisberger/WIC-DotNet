@@ -1,6 +1,3 @@
-[![Nuget](https://img.shields.io/nuget/v/WIC.DotNet)](https://www.nuget.org/packages/WIC.DotNet)
-[<img alt="GitHub" src="https://img.shields.io/github/license/sbaeumlisberger/VirtualizingWrapPanel">](https://github.com/sbaeumlisberger/VirtualizingWrapPanel/blob/master/LICENSE)
-
 # WIC for .NET
 
 A .NET library that makes the Windows Imaging Component (WIC) available to managed code. The library provides a thin layer of abstractions and extension methods to make it easier to work with the raw WIC interface. 
@@ -39,6 +36,6 @@ Windows Imaging Component allows you to accomplish tasks such as:
 
 ## Is there any example code?
 
-You can find some samples in the [Samples] directory and you can also refer to the the WIC samples on [MSDN].
+You can find some samples on GitHub in the [Samples] directory and you can also refer to the the WIC samples on [MSDN].
 
 [Samples]: https://github.com/sbaeumlisberger/WIC-DotNet/tree/develop/Samples
